@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>E-BMD Donggala Turbo Generator v4.0 — Bidang Pembinaan SD</title>
+  <title>E-BMD Donggala Turbo Generator v5.0 — Multi-KIB (1.3.2 & 1.3.5)</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- SheetJS untuk membaca file Excel (.xlsx / .xls / .csv) langsung di browser -->
@@ -71,9 +71,9 @@
         <div>
           <div class="flex items-center gap-2.5 flex-wrap">
             <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white">E-BMD DONGGALA TURBO GENERATOR</h1>
-            <span class="px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full">v4.0 FIXED & READY</span>
+            <span class="px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full">v5.0 MULTI-KIB AUTO-DETECT (1.3.2 & 1.3.5)</span>
           </div>
-          <p class="text-xs text-slate-400">Bidang Pembinaan SD • Disdikpora Kab. Donggala (`spkasettetap/saverincian`)</p>
+          <p class="text-xs text-slate-400">Support Peralatan & Mesin (`1.3.2`) + Aset Tetap Lainnya/Buku (`1.3.5`) • Disdikpora Kab. Donggala</p>
         </div>
       </div>
 
@@ -81,8 +81,8 @@
         <button onclick="copyGeneratedScript()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg shadow-emerald-600/30 transition flex items-center gap-1.5">
           <span>📋 Copy Script Console Sekolah Aktif</span>
         </button>
-        <button onclick="downloadThisHtmlFile()" class="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-xs shadow-lg shadow-sky-600/30 transition flex items-center gap-1.5" title="Download file index.html yang sudah diperbaiki ini untuk di-upload ke GitHub Anda">
-          <span>💾 Download `index.html` (Untuk Update GitHub)</span>
+        <button onclick="downloadThisHtmlFile()" class="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-xs shadow-lg shadow-sky-600/30 transition flex items-center gap-1.5" title="Download file index.html v5.0 ini untuk di-upload ke GitHub Anda">
+          <span>💾 Download `index.html` (Update GitHub v5.0)</span>
         </button>
       </div>
     </div>
@@ -150,7 +150,7 @@
           <div class="mt-4 pt-4 border-t border-slate-800">
             <div class="flex items-center justify-between mb-1.5">
               <label for="school-selector" class="text-xs font-extrabold uppercase tracking-wider text-emerald-400">
-                🏫 SEKOLAH YANG AKTIF SAAT INI (<span id="school-count-badge">3</span> SEKOLAH TERSEDIA):
+                🏫 SEKOLAH YANG AKTIF SAAT INI (<span id="school-count-badge">4</span> SEKOLAH TERSEDIA):
               </label>
               <button onclick="resetToDefaultSchools()" class="text-[11px] text-slate-400 hover:text-white underline">
                 Reset Data Bawaan
@@ -160,13 +160,23 @@
             </select>
           </div>
 
-          <!-- Pengaturan Baris & Kode Sumber -->
+          <!-- Pengaturan Baris, Mode Deteksi Jenis Aset & Satuan Default -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-3 border-t border-slate-800/80 text-xs">
-            <div class="col-span-2">
-              <label class="block text-slate-400 mb-1">Jenis Aset (`sumber`):</label>
-              <select id="cfg-sumber" onchange="regenerateCurrentScript()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-white font-semibold">
-                <option value="14676" selected>14676 — 1.3.5 ASET TETAP LAIN (Buku)</option>
-                <option value="14673">14673 — 1.3.2 PERALATAN & MESIN</option>
+            <div>
+              <label class="block text-slate-400 mb-1">Deteksi Jenis Aset:</label>
+              <select id="cfg-sumber" onchange="regenerateCurrentScript()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-emerald-300 font-bold">
+                <option value="AUTO" selected>⚡ AUTO-DETECT (1.3.2 & 1.3.5)</option>
+                <option value="14676">Paksa 14676 (1.3.5 Buku)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">Satuan Default:</label>
+              <select id="cfg-satuan" onchange="regenerateCurrentScript()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sky-300 font-bold">
+                <option value="AUTO" selected>⚡ Otomatis (Unit / Eks)</option>
+                <option value="Unit">Unit (Peralatan & Mesin)</option>
+                <option value="Buah">Buah (Peralatan & Mesin)</option>
+                <option value="Set">Set / Paket</option>
+                <option value="Eksemplar">Eksemplar (Buku 1.3.5)</option>
               </select>
             </div>
             <div>
@@ -337,9 +347,22 @@
 
   <script>
     // ============================================================================
-    // DATA SEKOLAH BAWAAN (TERMASUK SDN 4 SOJOL UTARA, SDN 10 BT, SDN 8 BT)
+    // DATA SEKOLAH BAWAAN (TERMASUK SMPN SATAP 2 BALAESANG TANJUNG 1.3.2, SDN 4 SOJOL UTARA, DLL)
     // ============================================================================
     const DEFAULT_SCHOOLS = [
+      {
+        id: "SMPN_SATAP2_BALAESANG_TANJUNG",
+        sekolah: "SMPN SATAP 2 BALAESANG TANJUNG",
+        kecamatan: "KEC. BALAESANG TANJUNG",
+        noSp: "SP/01/SMPNSATAP2BALAESANGTANJUNG/BOSP-TAHAPI/2026",
+        tglSp: "30-06-2026",
+        noBast: "BAST/BOSP/DISDIKPORA/2026",
+        noSpv: "SPV/BOSP/DISDIKPORA/2026",
+        items: [
+          {no:1, kode:"1.3.2.10.02.03.004", rek:"Peralatan dan Mesin - Komputer/Peralatan", nama:"Belanja Modal Peralatan dan Mesin BOS (Item #1 - 1.3.2.10.02.03.004)", jumlah:1, harga:4750000},
+          {no:2, kode:"1.3.2.10.02.03.003", rek:"Peralatan dan Mesin - Komputer/Peralatan", nama:"Belanja Modal Peralatan dan Mesin BOS (Item #2 - 1.3.2.10.02.03.003)", jumlah:1, harga:4750000}
+        ]
+      },
       {
         id: "SDN4_SOJOL_UTARA",
         sekolah: "SDN 4 SOJOL UTARA",
@@ -537,9 +560,12 @@
             else if (colName.includes('SURAT PESANAN') && colName.includes('TGL')) colMap.tglSp = idx;
             else if (colName.includes('NO. BAST') || colName.includes('NOMOR BAST')) colMap.noBast = idx;
             else if (colName.includes('NO. SPV') || colName.includes('NOMOR SPV')) colMap.noSpv = idx;
-            else if (colName.includes('KODE REKENING E-BMD') || colName.includes('KODE REKENING')) colMap.kode = idx;
+            else if (colName.includes('KODE REKENING E-BMD') || colName === 'KODE REKENING' || colName.includes('KODE BARANG')) colMap.kode = idx;
             else if (colName.includes('NAMA REKENING BELANJA E-BMD')) colMap.rek = idx;
-            else if (colName === 'NAMA BELANJA' || colName.includes('NAMA BARANG') || colName.includes('JUDUL')) colMap.nama = idx;
+            else if (colName === 'NAMA BELANJA' || colName.includes('NAMA BARANG') || colName.includes('JUDUL') || colName.includes('SPESIFIKASI')) {
+              if (colMap.nama === undefined) colMap.nama = idx;
+            }
+            else if (colName === 'MERK' || colName.includes('MEREK')) colMap.merk = idx;
             else if (colName === 'JUMLAH' || colName === 'VOLUME' || colName === 'QTY') colMap.jumlah = idx;
             else if (colName.includes('HARGA SATUAN') || colName === 'HARGA') colMap.harga = idx;
           });
@@ -556,6 +582,7 @@
         let jumlah = 0;
         let harga = 0;
         let nama = '';
+        let merk = '';
         let rek = '';
         let sekolah = '';
         let kecamatan = '';
@@ -565,10 +592,11 @@
         let noSpv = '';
 
         if (headerIdx !== -1 && colMap.kode !== undefined) {
-          kode = String(row[colMap.kode] || '').trim();
+          kode = String(row[colMap.kode] || '').trim().replace(/\s+/g, '');
           jumlah = cleanNum(row[colMap.jumlah]);
           harga = cleanNum(row[colMap.harga]);
           nama = String(row[colMap.nama] || '').trim();
+          merk = colMap.merk !== undefined ? String(row[colMap.merk] || '').trim() : '';
           rek = colMap.rek !== undefined ? String(row[colMap.rek] || '').trim() : '';
           sekolah = colMap.sek !== undefined ? String(row[colMap.sek] || '').trim() : '';
           kecamatan = colMap.kec !== undefined ? String(row[colMap.kec] || '').trim() : '';
@@ -578,12 +606,13 @@
           noSpv = colMap.noSpv !== undefined ? String(row[colMap.noSpv] || '').trim() : '';
         } else {
           const foundIdx = row.findIndex(function(cell) {
-            return /^1\.3\.\d+\.\d+\.\d+\.\d+\.\d+$/.test(String(cell || '').trim());
+            return /^1\.3\.\d+(\.\d+)+$/.test(String(cell || '').trim());
           });
           if (foundIdx !== -1) {
             kode = String(row[foundIdx]).trim();
             rek = String(row[foundIdx + 1] || '').trim();
             nama = String(row[foundIdx + 2] || '').trim();
+            merk = String(row[foundIdx + 3] || '').trim();
             jumlah = cleanNum(row[foundIdx + 5] || row[foundIdx + 3]);
             harga = cleanNum(row[foundIdx + 6] || row[foundIdx + 4]);
             sekolah = String(row[2] || fileName).trim();
@@ -616,8 +645,9 @@
         group.items.push({
           no: group.items.length + 1,
           kode: kode,
-          rek: rek || 'Aset Tetap Lainnya',
-          nama: nama || ('Item #' + (group.items.length + 1)),
+          rek: rek || (kode.startsWith('1.3.2') ? 'Peralatan dan Mesin' : 'Aset Tetap Lainnya'),
+          nama: nama || merk || ('Item #' + (group.items.length + 1)),
+          merk: merk || '',
           jumlah: jumlah,
           harga: harga
         });
@@ -700,7 +730,9 @@
       sel.innerHTML = schoolsData.map(function(s, idx) {
         const totRp = s.items.reduce(function(acc, it) { return acc + (it.jumlah * it.harga); }, 0);
         const totVol = s.items.reduce(function(acc, it) { return acc + it.jumlah; }, 0);
-        return '<option value="' + idx + '">' + (idx + 1) + '. ' + s.sekolah + ' — (' + s.items.length + ' Baris | ' + totVol + ' Eks | Rp ' + totRp.toLocaleString('id-ID') + ')</option>';
+        const is132 = s.items.some(function(it) { return it.kode.startsWith('1.3.2'); });
+        const unitLabel = is132 ? 'Unit' : 'Eks';
+        return '<option value="' + idx + '">' + (idx + 1) + '. ' + s.sekolah + ' — (' + s.items.length + ' Baris | ' + totVol + ' ' + unitLabel + ' | Rp ' + totRp.toLocaleString('id-ID') + ')</option>';
       }).join('');
     }
 
@@ -712,6 +744,8 @@
       const totalBaris = school.items.length;
       const totalVol = school.items.reduce(function(a, b) { return a + b.jumlah; }, 0);
       const totalRp = school.items.reduce(function(a, b) { return a + (b.jumlah * b.harga); }, 0);
+      const has132 = school.items.some(function(it) { return it.kode.startsWith('1.3.2'); });
+      const unitName = has132 ? 'Unit/Buah' : 'Eksemplar';
 
       document.getElementById('cfg-start-row').value = 1;
       document.getElementById('cfg-end-row').value = totalBaris;
@@ -722,98 +756,102 @@
       document.getElementById('info-nobast').innerText = 'BAST: ' + (school.noBast || '-');
       document.getElementById('info-nospv').innerText = 'SPV: ' + (school.noSpv || '-');
       document.getElementById('info-baris').innerText = totalBaris + ' Baris';
-      document.getElementById('info-volume').innerText = '(' + totalVol + ' Eksemplar)';
+      document.getElementById('info-volume').innerText = '(' + totalVol + ' ' + unitName + ')';
       document.getElementById('info-totalrp').innerText = formatRupiah(totalRp);
 
       document.getElementById('script-school-title').innerText = school.sekolah;
-      document.getElementById('script-summary-badge').innerText = totalBaris + ' Baris | ' + totalVol + ' Eks';
+      document.getElementById('script-summary-badge').innerText = totalBaris + ' Baris | ' + totalVol + ' ' + unitName;
       document.getElementById('table-school-label').innerText = school.sekolah;
 
-      // Rekap per Kode Rekening
-      const rekapMap = {};
-      school.items.forEach(function(it) {
-        if (!rekapMap[it.kode]) {
-          rekapMap[it.kode] = { kode: it.kode, rek: it.rek, baris: 0, vol: 0, subtotal: 0 };
-        }
-        rekapMap[it.kode].baris += 1;
-        rekapMap[it.kode].vol += it.jumlah;
-        rekapMap[it.kode].subtotal += (it.jumlah * it.harga);
-      });
-
-      const rekapTbody = document.getElementById('rekap-tbody');
-      rekapTbody.innerHTML = Object.values(rekapMap).map(function(r) {
-        return '<tr class="hover:bg-slate-800/40">' +
-          '<td class="py-2 px-2"><div class="font-bold text-sky-400">' + r.kode + '</div><div class="font-sans text-[10px] text-slate-400 truncate max-w-[150px]">' + r.rek + '</div></td>' +
-          '<td class="py-2 px-2 text-center font-bold text-slate-200">' + r.baris + '</td>' +
-          '<td class="py-2 px-2 text-center font-bold text-emerald-400">' + r.vol + '</td>' +
-          '<td class="py-2 px-2 text-right font-semibold text-white">Rp ' + r.subtotal.toLocaleString('id-ID') + '</td>' +
-        '</tr>';
-      }).join('');
-
-      document.getElementById('filter-input').value = '';
-      renderRincianTable(school.items);
+      renderTables(school);
       regenerateCurrentScript();
     }
 
-    function renderRincianTable(items) {
-      const rincianTbody = document.getElementById('rincian-tbody');
-      rincianTbody.innerHTML = items.map(function(it) {
-        return '<tr class="hover:bg-slate-800/50 transition-colors">' +
-          '<td class="py-2 px-2.5 text-center font-mono text-slate-400">' + it.no + '</td>' +
-          '<td class="py-2 px-2.5 font-mono font-semibold text-sky-400 whitespace-nowrap">' + it.kode + '</td>' +
-          '<td class="py-2 px-2.5 text-slate-200">' + it.nama + '</td>' +
-          '<td class="py-2 px-2.5 text-center font-mono font-bold text-emerald-400">' + it.jumlah + '</td>' +
-          '<td class="py-2 px-2.5 text-right font-mono text-slate-200">' + it.harga.toLocaleString('id-ID') + ',00</td>' +
-          '<td class="py-2 px-2.5 text-right font-mono font-semibold text-white">' + (it.jumlah * it.harga).toLocaleString('id-ID') + ',00</td>' +
+    function renderTables(school) {
+      // 1. Render Tabel Rekap per Kode Rekening
+      const mapRekap = new Map();
+      school.items.forEach(function(it) {
+        if (!mapRekap.has(it.kode)) {
+          mapRekap.set(it.kode, { kode: it.kode, rek: it.rek || '', baris: 0, vol: 0, nilai: 0 });
+        }
+        const g = mapRekap.get(it.kode);
+        g.baris += 1;
+        g.vol += it.jumlah;
+        g.nilai += (it.jumlah * it.harga);
+      });
+
+      const rekapArr = Array.from(mapRekap.values());
+      document.getElementById('rekap-tbody').innerHTML = rekapArr.map(function(r) {
+        return '<tr class="hover:bg-slate-800/40">' +
+          '<td class="py-2 px-2"><div class="font-bold text-amber-300">' + r.kode + '</div><div class="text-[10px] font-sans text-slate-400 truncate max-w-[140px]">' + r.rek + '</div></td>' +
+          '<td class="py-2 px-2 text-center text-white">' + r.baris + '</td>' +
+          '<td class="py-2 px-2 text-center text-sky-300 font-bold">' + r.vol + '</td>' +
+          '<td class="py-2 px-2 text-right text-emerald-400 font-bold">' + r.nilai.toLocaleString('id-ID') + '</td>' +
         '</tr>';
       }).join('');
+
+      // 2. Render Tabel Rincian
+      filterRincianTable();
     }
 
     function filterRincianTable() {
       const school = schoolsData[currentSchoolIndex];
       if (!school) return;
       const kw = (document.getElementById('filter-input').value || '').toLowerCase().trim();
-      if (!kw) {
-        renderRincianTable(school.items);
-        return;
-      }
       const filtered = school.items.filter(function(it) {
-        return it.kode.toLowerCase().includes(kw) ||
-               it.nama.toLowerCase().includes(kw) ||
-               (it.rek || '').toLowerCase().includes(kw);
+        if (!kw) return true;
+        return it.kode.toLowerCase().includes(kw) || (it.nama || '').toLowerCase().includes(kw) || (it.rek || '').toLowerCase().includes(kw);
       });
-      renderRincianTable(filtered);
+
+      document.getElementById('rincian-tbody').innerHTML = filtered.map(function(it) {
+        const sub = it.jumlah * it.harga;
+        return '<tr class="hover:bg-slate-800/50 transition">' +
+          '<td class="py-2 px-2.5 text-center font-mono text-slate-400">' + it.no + '</td>' +
+          '<td class="py-2 px-2.5 font-mono font-bold text-amber-300 whitespace-nowrap">' + it.kode + '</td>' +
+          '<td class="py-2 px-2.5 text-white">' + it.nama + '</td>' +
+          '<td class="py-2 px-2.5 text-center font-mono font-bold text-sky-300">' + it.jumlah + '</td>' +
+          '<td class="py-2 px-2.5 text-right font-mono text-slate-200">' + it.harga.toLocaleString('id-ID') + '</td>' +
+          '<td class="py-2 px-2.5 text-right font-mono font-bold text-emerald-400">' + sub.toLocaleString('id-ID') + '</td>' +
+        '</tr>';
+      }).join('');
     }
 
-    // Pembuat Script Console E-BMD (Menggunakan Array.join murni agar 100% bebas bug sintaks)
+    // Pembuat Script Console E-BMD v5.0 (MULTI-KIB: Auto-Detect 1.3.1, 1.3.2, 1.3.3, 1.3.4, 1.3.5 + Auto Klik Rekening Sesuai + Dynamic Satuan)
     function regenerateCurrentScript() {
       const school = schoolsData[currentSchoolIndex];
       if (!school) return;
 
-      const sumberId = document.getElementById('cfg-sumber').value || '14676';
+      const cfgSumber = document.getElementById('cfg-sumber').value || 'AUTO';
+      const cfgSatuan = document.getElementById('cfg-satuan').value || 'AUTO';
       const startRowVal = parseInt(document.getElementById('cfg-start-row').value, 10) || 1;
       const endRowVal = parseInt(document.getElementById('cfg-end-row').value, 10) || school.items.length;
       const totVol = school.items.reduce(function(a, b) { return a + b.jumlah; }, 0);
       const totRp = school.items.reduce(function(a, b) { return a + (b.jumlah * b.harga); }, 0);
+      const has132 = school.items.some(function(it) { return it.kode.startsWith('1.3.2'); });
 
       const cleanItems = school.items.map(function(it) {
         return {
           no: it.no,
-          kode: it.kode,
-          nama: it.nama,
+          kode: it.kode.trim(),
+          nama: it.nama || '',
+          merk: it.merk || '',
           jumlah: it.jumlah,
           harga: it.harga
         };
       });
 
       const lines = [
-        "(function() {",
+        "(async function() {",
         "  const old = document.getElementById('ebmd-turbo-panel');",
         "  if (old) old.remove();",
         "",
-        "  // DATA OTOMATIS: " + school.sekolah + " (" + school.noSp + ")",
-        "  // Total: " + school.items.length + " Baris | " + totVol + " Eksemplar | Rp " + totRp.toLocaleString('id-ID') + ",00",
+        "  // DATA OTOMATIS v5.0 (MULTI-KIB 1.3.2 & 1.3.5): " + school.sekolah + " (" + school.noSp + ")",
+        "  // Total: " + school.items.length + " Baris | " + totVol + " Unit/Eks | Rp " + totRp.toLocaleString('id-ID') + ",00",
         "  const activeData = " + JSON.stringify(cleanItems, null, 2) + ";",
+        "  const forcedSumber = '" + cfgSumber + "';",
+        "  const preferredSatuanName = '" + (cfgSatuan === 'AUTO' ? (has132 ? 'Unit' : 'Eksemplar') : cfgSatuan) + "';",
+        "",
+        "  const sleep = function(ms) { return new Promise(function(r) { setTimeout(r, ms); }); };",
         "",
         "  function formatNominal(num) {",
         "    return Number(num).toLocaleString('id-ID') + ',00';",
@@ -821,28 +859,82 @@
         "",
         "  function getVal(idOrName, fallback) {",
         "    const el = document.querySelector('[name=\"' + idOrName + '\"], #' + idOrName);",
-        "    return el ? el.value : (fallback || '');",
+        "    return el ? String(el.value || '').trim() : (fallback || '');",
         "  }",
+        "",
+        "  // LANGKAH PENTING 1: Otomatis Klik Radio 'Rekening Sesuai' (cekrek = 0) agar dropdown #sumber & #Satuan dimuat oleh E-BMD!",
+        "  const radioSesuai = document.querySelector('input[name=\"cekrek\"][value=\"0\"]');",
+        "  if (radioSesuai && !radioSesuai.checked) {",
+        "    radioSesuai.click();",
+        "    radioSesuai.checked = true;",
+        "    radioSesuai.dispatchEvent(new Event('change', { bubbles: true }));",
+        "    if (window.jQuery) window.jQuery(radioSesuai).trigger('change').trigger('click');",
+        "    await sleep(500);",
+        "  }",
+        "  const labelSesuai = Array.from(document.querySelectorAll('label, span')).find(function(el) {",
+        "    return (el.innerText || '').trim() === 'Rekening Sesuai';",
+        "  });",
+        "  if (labelSesuai) {",
+        "    labelSesuai.click();",
+        "    await sleep(400);",
+        "  }",
+        "",
+        "  // LANGKAH PENTING 2: Baca daftar Satuan langsung dari <select id='Satuan'> di halaman E-BMD",
+        "  const satuanSelectEl = document.querySelector('select[name=\"Satuan\"], #Satuan');",
+        "  const satuanOptions = [];",
+        "  let defaultSatuanId = '198'; // fallback Eksemplar",
+        "  if (satuanSelectEl && satuanSelectEl.options && satuanSelectEl.options.length > 0) {",
+        "    Array.from(satuanSelectEl.options).forEach(function(opt) {",
+        "      const val = String(opt.value || '').trim();",
+        "      const txt = String(opt.text || '').trim();",
+        "      if (val && val !== '0' && txt && !txt.toLowerCase().includes('pilih')) {",
+        "        satuanOptions.push({ val: val, txt: txt });",
+        "      }",
+        "    });",
+        "  }",
+        "  if (satuanOptions.length === 0) {",
+        "    satuanOptions.push({ val: '198', txt: 'Eksemplar (Default 198)' });",
+        "  }",
+        "  // Pilih satuan default yang paling cocok (Unit / Buah untuk 1.3.2, Eksemplar untuk 1.3.5)",
+        "  const prefLow = preferredSatuanName.toLowerCase();",
+        "  const matchedSat = satuanOptions.find(function(o) { return o.txt.toLowerCase() === prefLow; }) ||",
+        "                     satuanOptions.find(function(o) { return o.txt.toLowerCase().includes(prefLow); }) ||",
+        "                     (prefLow === 'unit' ? satuanOptions.find(function(o) { return o.txt.toLowerCase() === 'buah' || o.txt.toLowerCase().includes('unit'); }) : null) ||",
+        "                     satuanOptions[0];",
+        "  if (matchedSat) defaultSatuanId = matchedSat.val;",
+        "",
+        "  const satuanOptionsHtml = satuanOptions.map(function(o) {",
+        "    const sel = (o.val === defaultSatuanId) ? 'selected' : '';",
+        "    return '<option value=\"' + o.val + '\" ' + sel + '>' + o.txt + ' (ID: ' + o.val + ')</option>';",
+        "  }).join('');",
         "",
         "  const panel = document.createElement('div');",
         "  panel.id = 'ebmd-turbo-panel';",
-        "  panel.style = 'position:fixed;bottom:15px;right:15px;width:430px;background:#0f172a;color:#f8fafc;z-index:99999999;padding:16px;border-radius:12px;box-shadow:0 20px 45px rgba(0,0,0,0.85);font-family:system-ui,sans-serif;font-size:12px;border:2px solid #22c55e;';",
+        "  panel.style = 'position:fixed;bottom:15px;right:15px;width:445px;background:#0f172a;color:#f8fafc;z-index:99999999;padding:16px;border-radius:12px;box-shadow:0 20px 45px rgba(0,0,0,0.85);font-family:system-ui,sans-serif;font-size:12px;border:2px solid #22c55e;';",
         "  panel.innerHTML = '<div style=\"display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;border-bottom:1px solid #334155;padding-bottom:8px;\">' +",
-        "    '<span style=\"font-weight:800;font-size:13px;color:#4ade80;\">⚡ " + school.sekolah.replace(/'/g, "") + "</span>' +",
+        "    '<span style=\"font-weight:800;font-size:13px;color:#4ade80;\">⚡ " + school.sekolah.replace(/'/g, "") + " (v5.0)</span>' +",
         "    '<span style=\"background:#15803d;padding:2px 8px;border-radius:99px;font-weight:bold;font-size:11px;\">SPK #' + getVal('IdSpk','-') + '</span>' +",
         "  '</div>' +",
         "  '<div style=\"background:#1e293b;padding:10px;border-radius:8px;margin-bottom:10px;border-left:4px solid #38bdf8;line-height:1.45;\">' +",
         "    '<div><b>No. SPK:</b> <span style=\"color:#facc15;font-family:monospace;\">" + school.noSp.replace(/'/g, "") + "</span></div>' +",
-        "    '<div><b>Total Kertas Kerja:</b> <span style=\"color:#4ade80;font-weight:bold;\">" + school.items.length + " Baris (" + totVol + " Eks | Rp " + totRp.toLocaleString('id-ID') + ",00)</span></div>' +",
+        "    '<div><b>Total Kertas Kerja:</b> <span style=\"color:#4ade80;font-weight:bold;\">" + school.items.length + " Baris (" + totVol + " Unit/Eks | Rp " + totRp.toLocaleString('id-ID') + ",00)</span></div>' +",
         "  '</div>' +",
-        "  '<div style=\"display:flex;gap:8px;margin-bottom:10px;align-items:center;background:#020617;padding:8px;border-radius:6px;\">' +",
-        "    '<label style=\"color:#cbd5e1;font-weight:bold;\">Tembak Baris:</label>' +",
-        "    '<input id=\"ebmd-start\" type=\"number\" value=\"" + startRowVal + "\" min=\"1\" max=\"" + school.items.length + "\" style=\"width:60px;padding:5px;background:#1e293b;color:#4ade80;border:1px solid #475569;border-radius:4px;font-weight:bold;text-align:center;\">' +",
-        "    '<span style=\"color:#94a3b8;\">sampai</span>' +",
-        "    '<input id=\"ebmd-end\" type=\"number\" value=\"" + endRowVal + "\" min=\"1\" max=\"" + school.items.length + "\" style=\"width:60px;padding:5px;background:#1e293b;color:#4ade80;border:1px solid #475569;border-radius:4px;font-weight:bold;text-align:center;\">' +",
+        "  '<div style=\"display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;background:#020617;padding:8px;border-radius:6px;\">' +",
+        "    '<div>' +",
+        "      '<label style=\"color:#94a3b8;font-size:10px;display:block;margin-bottom:3px;\">Rentang Baris:</label>' +",
+        "      '<div style=\"display:flex;align-items:center;gap:4px;\">' +",
+        "        '<input id=\"ebmd-start\" type=\"number\" value=\"" + startRowVal + "\" min=\"1\" max=\"" + school.items.length + "\" style=\"width:52px;padding:4px;background:#1e293b;color:#4ade80;border:1px solid #475569;border-radius:4px;font-weight:bold;text-align:center;\">' +",
+        "        '<span style=\"color:#64748b;\">-</span>' +",
+        "        '<input id=\"ebmd-end\" type=\"number\" value=\"" + endRowVal + "\" min=\"1\" max=\"" + school.items.length + "\" style=\"width:52px;padding:4px;background:#1e293b;color:#4ade80;border:1px solid #475569;border-radius:4px;font-weight:bold;text-align:center;\">' +",
+        "      '</div>' +",
+        "    '</div>' +",
+        "    '<div>' +",
+        "      '<label style=\"color:#38bdf8;font-size:10px;font-weight:bold;display:block;margin-bottom:3px;\">Satuan Barang E-BMD:</label>' +",
+        "      '<select id=\"ebmd-satuan-sel\" style=\"width:100%;padding:4px 6px;background:#1e293b;color:#fff;border:1px solid #38bdf8;border-radius:4px;font-weight:bold;font-size:11px;\">' + satuanOptionsHtml + '</select>' +",
+        "    '</div>' +",
         "  '</div>' +",
         "  '<button id=\"ebmd-run-btn\" style=\"width:100%;padding:12px;background:#16a34a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:13px;margin-bottom:8px;box-shadow:0 4px 15px rgba(22,163,74,0.5);\">🚀 EKSEKUSI BARIS " + startRowVal + " S/D " + endRowVal + " SEKARANG</button>' +",
-        "  '<div id=\"ebmd-log\" style=\"background:#020617;padding:8px;border-radius:6px;height:130px;overflow-y:auto;font-family:monospace;font-size:11px;color:#94a3b8;border:1px solid #1e293b;\">Siap menembakkan data " + school.sekolah.replace(/'/g, "") + "...</div>';",
+        "  '<div id=\"ebmd-log\" style=\"background:#020617;padding:8px;border-radius:6px;height:145px;overflow-y:auto;font-family:monospace;font-size:11px;color:#94a3b8;border:1px solid #1e293b;\">Siap menembakkan data " + school.sekolah.replace(/'/g, "") + " (Support 1.3.2 & 1.3.5)...</div>';",
         "  document.body.appendChild(panel);",
         "",
         "  const logBox = document.getElementById('ebmd-log');",
@@ -855,18 +947,87 @@
         "    logBox.scrollTop = logBox.scrollHeight;",
         "  }",
         "",
-        "  async function fetchKodeMap() {",
-        "    log('🔄 Mengambil kamus Kode Aset dari server E-BMD...', '#38bdf8');",
+        "  // LANGKAH PENTING 3: Auto-Discovery Kamus Kode Aset untuk SEMUA Jenis Aset (1.3.2 Peralatan & Mesin, 1.3.5 Aset Tetap Lain, dll)",
+        "  async function fetchKodeMap(targetRows) {",
+        "    log('🔄 Mendeteksi Jenis Aset (#sumber) di halaman E-BMD...', '#38bdf8');",
         "    const termin = getVal('Termin', '1');",
-        "    const res = await fetch('https://e-bmd.donggala.go.id/service/GetitemRinciFromJns?Termin=' + termin + '&&ItemId=" + sumberId + "', { credentials: 'include' });",
-        "    const list = await res.json();",
-        "    const map = {};",
-        "    if (Array.isArray(list)) {",
-        "      list.forEach(function(item) {",
-        "        if (item.Kode && item.ItemId) map[item.Kode.trim()] = String(item.ItemId);",
+        "    const map = {}; // kode -> { itemId, sumberId }",
+        "",
+        "    // Kumpulkan semua kandidat ItemId Sumber dari <select id='sumber'> di halaman aktif",
+        "    const sumberCandidates = [];",
+        "    const sumberEl = document.querySelector('select[name=\"sumber\"], #sumber');",
+        "    if (sumberEl && sumberEl.options) {",
+        "      Array.from(sumberEl.options).forEach(function(opt) {",
+        "        const rawVal = String(opt.value || '').trim();",
+        "        const txt = String(opt.text || '').trim();",
+        "        if (rawVal && rawVal !== '0' && /^\\d+$/.test(rawVal)) {",
+        "          sumberCandidates.push({ id: rawVal, text: txt });",
+        "        }",
         "      });",
         "    }",
-        "    log('✅ Kamus kode aset siap (' + Object.keys(map).length + ' kode).', '#4ade80');",
+        "",
+        "    // Tambahkan kandidat cadangan jika #sumber belum termuat penuh",
+        "    const fallbackIds = ['14676', '14673', '14672', '14674', '14675', '1', '2', '3', '4', '5'];",
+        "    if (forcedSumber !== 'AUTO' && !sumberCandidates.some(function(c) { return c.id === forcedSumber; })) {",
+        "      sumberCandidates.unshift({ id: forcedSumber, text: 'Forced Sumber' });",
+        "    }",
+        "    fallbackIds.forEach(function(fid) {",
+        "      if (!sumberCandidates.some(function(c) { return c.id === fid; })) {",
+        "        sumberCandidates.push({ id: fid, text: 'Fallback ID ' + fid });",
+        "      }",
+        "    });",
+        "",
+        "    // Cek juga apakah di dropdown #levkode4 sudah ada option yang termuat",
+        "    const lev4El = document.querySelector('select[name=\"levkode4\"], #levkode4');",
+        "    if (lev4El && lev4El.options && lev4El.options.length > 1) {",
+        "      const currentSumber = getVal('sumber', (sumberCandidates[0] ? sumberCandidates[0].id : '14676'));",
+        "      Array.from(lev4El.options).forEach(function(opt) {",
+        "        const v = String(opt.value || '').trim();",
+        "        const t = String(opt.text || '').trim();",
+        "        const m = t.match(/(1\\.3\\.\\d+(?:\\.\\d+)+)/);",
+        "        if (v && m) {",
+        "          map[m[1].trim()] = { itemId: v, sumberId: currentSumber };",
+        "        }",
+        "      });",
+        "    }",
+        "",
+        "    // Cari prefix kode yang dibutuhkan oleh kertas kerja (misal '1.3.2' atau '1.3.5')",
+        "    const neededPrefixes = Array.from(new Set(targetRows.map(function(r) {",
+        "      return r.kode.split('.').slice(0, 3).join('.');",
+        "    })));",
+        "",
+        "    // Urutkan kandidat sumber: dahulukan yang teksnya cocok dengan prefix (misal '1.3.2' atau 'PERALATAN')",
+        "    sumberCandidates.sort(function(a, b) {",
+        "      const aMatch = neededPrefixes.some(function(p) { return a.text.includes(p) || (p === '1.3.2' && a.text.toUpperCase().includes('PERALATAN')) || (p === '1.3.5' && a.text.toUpperCase().includes('ASET TETAP LAIN')); });",
+        "      const bMatch = neededPrefixes.some(function(p) { return b.text.includes(p) || (p === '1.3.2' && b.text.toUpperCase().includes('PERALATAN')) || (p === '1.3.5' && b.text.toUpperCase().includes('ASET TETAP LAIN')); });",
+        "      return (bMatch ? 1 : 0) - (aMatch ? 1 : 0);",
+        "    });",
+        "",
+        "    for (let c = 0; c < sumberCandidates.length; c++) {",
+        "      const cand = sumberCandidates[c];",
+        "      try {",
+        "        const url = 'https://e-bmd.donggala.go.id/service/GetitemRinciFromJns?Termin=' + encodeURIComponent(termin) + '&&ItemId=' + encodeURIComponent(cand.id);",
+        "        const res = await fetch(url, { credentials: 'include' });",
+        "        if (!res.ok) continue;",
+        "        const text = await res.text();",
+        "        if (!text || text.trim().length < 5) continue;",
+        "        const list = JSON.parse(text);",
+        "        if (Array.isArray(list) && list.length > 0) {",
+        "          list.forEach(function(item) {",
+        "            if (item.Kode && item.ItemId) {",
+        "              map[String(item.Kode).trim()] = { itemId: String(item.ItemId).trim(), sumberId: cand.id };",
+        "            }",
+        "          });",
+        "          log('✅ Sumber [' + cand.id + ' - ' + cand.text + ']: ' + list.length + ' kode aset dimuat.', '#4ade80');",
+        "        }",
+        "      } catch (e) {}",
+        "",
+        "      // Cek apakah semua kode pada baris target sudah ditemukan di map",
+        "      const allFound = targetRows.every(function(r) { return !!map[r.kode.trim()]; });",
+        "      if (allFound) break;",
+        "    }",
+        "",
+        "    log('📚 Total kamus kode aset siap: ' + Object.keys(map).length + ' kode.', Object.keys(map).length > 0 ? '#4ade80' : '#f87171');",
         "    return map;",
         "  }",
         "",
@@ -874,6 +1035,7 @@
         "    const btn = document.getElementById('ebmd-run-btn');",
         "    const startNo = parseInt(document.getElementById('ebmd-start').value, 10) || 1;",
         "    const endNo = parseInt(document.getElementById('ebmd-end').value, 10) || activeData.length;",
+        "    const chosenSatuanId = document.getElementById('ebmd-satuan-sel').value || '198';",
         "    const rows = activeData.filter(function(r) { return r.no >= startNo && r.no <= endNo; });",
         "",
         "    btn.disabled = true;",
@@ -881,46 +1043,56 @@
         "    btn.innerText = '⏳ SEDANG MENGIRIM DATA KE SERVER...';",
         "",
         "    try {",
-        "      const kodeMap = await fetchKodeMap();",
+        "      const kodeMap = await fetchKodeMap(rows);",
         "      let sukses = 0;",
         "",
         "      for (let i = 0; i < rows.length; i++) {",
         "        const row = rows[i];",
-        "        const itemId = kodeMap[row.kode.trim()];",
-        "        if (!itemId) {",
-        "          log('❌ Baris #' + row.no + ' Gagal: Kode ' + row.kode + ' tidak ditemukan!', '#f87171');",
+        "        const found = kodeMap[row.kode.trim()];",
+        "        if (!found || !found.itemId) {",
+        "          log('❌ Baris #' + row.no + ' Gagal: Kode ' + row.kode + ' tidak ditemukan di kamus halaman ini!', '#f87171');",
         "          continue;",
         "        }",
         "",
+        "        // Ambil seluruh field dari form#commentForm di halaman aktif sebagai template dasar agar semua field KIB B (1.3.2) & KIB E (1.3.5) lengkap",
+        "        const formEl = document.getElementById('commentForm') || document.querySelector('form');",
         "        const params = new URLSearchParams();",
-        "        params.append('cekrek', '0');",
-        "        params.append('sumber', '" + sumberId + "');",
-        "        params.append('levkode4', itemId);",
-        "        params.append('levkode5', '0');",
-        "        params.append('Satuan', '198');",
-        "        params.append('volume', String(row.jumlah));",
-        "        params.append('nominal', formatNominal(row.harga));",
-        "        params.append('judul', '');",
-        "        params.append('pencipta', '');",
-        "        params.append('asal', '');",
-        "        params.append('brgpencipta', '');",
-        "        params.append('bahan', '');",
-        "        params.append('jenis', '');",
-        "        params.append('ukuran', '');",
-        "        params.append('act', getVal('act', 'add'));",
-        "        params.append('UrusanId', getVal('UrusanId', '2'));",
-        "        params.append('OrganisasiId', getVal('OrganisasiId', '3'));",
-        "        params.append('Start', getVal('Start', '2026-01-01'));",
-        "        params.append('Finish', getVal('Finish', '2026-12-31'));",
-        "        params.append('Termin', getVal('Termin', '1'));",
-        "        params.append('Text_Periode1', getVal('Text_Periode1', '2026'));",
-        "        params.append('kodelok', getVal('kodelok', ''));",
-        "        params.append('LokasiId', getVal('LokasiId', ''));",
-        "        params.append('bentukkontrak', getVal('bentukkontrak', '5'));",
-        "        params.append('isapbn', getVal('isapbn', '0'));",
-        "        params.append('IdSpk', getVal('IdSpk', ''));",
-        "        params.append('JenisId', getVal('JenisId', '2'));",
-        "        params.append('RekeningId', getVal('RekeningId', ''));",
+        "        if (formEl) {",
+        "          const fd = new FormData(formEl);",
+        "          fd.forEach(function(val, key) {",
+        "            params.set(key, String(val));",
+        "          });",
+        "        }",
+        "",
+        "        // Override field utama dengan rincian baris kertas kerja",
+        "        params.set('cekrek', '0');",
+        "        params.set('sumber', found.sumberId);",
+        "        params.set('levkode4', found.itemId);",
+        "        params.set('levkode5', getVal('levkode5', '0') || '0');",
+        "        params.set('Satuan', chosenSatuanId);",
+        "        params.set('volume', String(row.jumlah));",
+        "        params.set('nominal', formatNominal(row.harga));",
+        "        if (!params.has('judul')) params.set('judul', '');",
+        "        if (!params.has('pencipta')) params.set('pencipta', '');",
+        "        if (!params.has('asal')) params.set('asal', '');",
+        "        if (!params.has('brgpencipta')) params.set('brgpencipta', '');",
+        "        if (!params.has('bahan')) params.set('bahan', '');",
+        "        if (!params.has('jenis')) params.set('jenis', '');",
+        "        if (!params.has('ukuran')) params.set('ukuran', '');",
+        "        params.set('act', getVal('act', 'add'));",
+        "        params.set('UrusanId', getVal('UrusanId', '2'));",
+        "        params.set('OrganisasiId', getVal('OrganisasiId', '3'));",
+        "        params.set('Start', getVal('Start', '2026-01-01'));",
+        "        params.set('Finish', getVal('Finish', '2026-12-31'));",
+        "        params.set('Termin', getVal('Termin', '1'));",
+        "        params.set('Text_Periode1', getVal('Text_Periode1', '2026'));",
+        "        params.set('kodelok', getVal('kodelok', ''));",
+        "        params.set('LokasiId', getVal('LokasiId', ''));",
+        "        params.set('bentukkontrak', getVal('bentukkontrak', '5'));",
+        "        params.set('isapbn', getVal('isapbn', '0'));",
+        "        params.set('IdSpk', getVal('IdSpk', ''));",
+        "        params.set('JenisId', getVal('JenisId', '2'));",
+        "        params.set('RekeningId', getVal('RekeningId', ''));",
         "",
         "        const resp = await fetch('https://e-bmd.donggala.go.id/penatausahaanperbendaharaan/pengeluaranskpd/spkasettetap/saverincian', {",
         "          method: 'POST',",
@@ -931,16 +1103,22 @@
         "",
         "        if (resp.ok) {",
         "          sukses++;",
-        "          log('✅ [#' + row.no + '] Masuk -> ' + row.kode + ' | Vol: ' + row.jumlah + ' | Rp ' + formatNominal(row.harga), '#4ade80');",
+        "          log('✅ [#' + row.no + '] Masuk -> ' + row.kode + ' (ItemId:' + found.itemId + ') | Vol: ' + row.jumlah + ' | Rp ' + formatNominal(row.harga), '#4ade80');",
         "        } else {",
         "          log('⚠️ [#' + row.no + '] HTTP Status: ' + resp.status, '#facc15');",
         "        }",
-        "        await new Promise(function(r) { setTimeout(r, 280); });",
+        "        await sleep(300);",
         "      }",
         "",
         "      log('🎉 SELESAI! ' + sukses + ' dari ' + rows.length + ' baris berhasil disimpan!', '#facc15');",
-        "      log('🔄 Memuat ulang halaman dalam 2 detik...', '#38bdf8');",
-        "      setTimeout(function() { location.reload(); }, 1800);",
+        "      if (sukses > 0) {",
+        "        log('🔄 Memuat ulang halaman dalam 2 detik...', '#38bdf8');",
+        "        setTimeout(function() { location.reload(); }, 1800);",
+        "      } else {",
+        "        btn.disabled = false;",
+        "        btn.style.opacity = '1';",
+        "        btn.innerText = '🚀 EKSEKUSI ULANG';",
+        "      }",
         "    } catch (err) {",
         "      log('❌ Error: ' + err.message, '#f87171');",
         "      btn.disabled = false;",
