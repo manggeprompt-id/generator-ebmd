@@ -141,117 +141,172 @@
             <div class="w-12 h-12 rounded-xl bg-sky-500/15 group-hover:bg-emerald-500/20 border border-sky-500/30 group-hover:border-emerald-400 flex items-center justify-center text-2xl mb-2.5 transition">
               📥
             </div>
-            <div class="text-sm font-extrabold text-white group-hover:text-emerald-300">
-              Klik di Sini untuk Pilih File Excel (.xlsx) atau Tarik File ke Sini
+            <div class="text-sm font-extrabold text-white group-hover:text-emerald-300 transition">
+              Klik untuk Pilih File Excel (.xlsx) atau Tarik & Lepas ke Sini
             </div>
-            <p class="text-xs text-slate-400 mt-1">
-              Bisa pilih <b>1 file Excel</b> atau blok <b>banyak file Excel sekolah sekaligus</b>. Setelah dipilih, kode di sebelah kanan langsung siap di-copy!
+            <p class="text-xs text-slate-400 mt-1 max-w-lg">
+              Mendukung banyak file sekaligus! Otomatis mendeteksi <b>KODE REKENING E-BMD</b>, <b>NAMA BELANJA</b>, <b>JUMLAH</b>, <b>HARGA SATUAN</b>, serta nomor <b>SPK, BAST & SPV</b>.
             </p>
           </label>
 
-          <!-- Pilihan Sekolah Dropdown -->
+          <!-- Pilihan Sekolah Dropdown + Kolom Pencarian Cepat Sekolah -->
           <div class="mt-4 pt-4 border-t border-slate-800">
-            <div class="flex items-center justify-between mb-1.5">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
               <label for="school-selector" class="text-xs font-extrabold uppercase tracking-wider text-emerald-400">
-                🏫 SEKOLAH YANG AKTIF SAAT INI (<span id="school-count-badge">4</span> SEKOLAH TERSEDIA):
+                🏫 CARI & PILIH SEKOLAH (<span id="school-count-badge">4</span> SEKOLAH TERSEDIA):
               </label>
               <button onclick="resetToDefaultSchools()" class="text-[11px] text-slate-400 hover:text-white underline">
                 Reset Data Bawaan
               </button>
             </div>
+
+            <!-- Kolom Pencarian Cepat Nama Sekolah -->
+            <div class="relative mb-2.5">
+              <input id="school-search-input" type="text" oninput="filterSchoolSelector()" placeholder="🔍 Ketik nama sekolah, kecamatan, atau nomor SPK/BAST untuk mencari cepat..." class="w-full bg-slate-950 border border-sky-500/60 focus:border-emerald-400 rounded-xl pl-3.5 pr-20 py-2 text-xs font-semibold text-white placeholder-slate-500 focus:outline-none shadow-inner" />
+              <button id="clear-school-search" onclick="clearSchoolSearch()" class="hidden absolute right-2 top-1/2 -translate-y-1/2 px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-300">
+                ✖ Reset
+              </button>
+            </div>
+
             <select id="school-selector" onchange="selectSchool(this.value)" class="w-full bg-slate-950 border-2 border-emerald-500/60 focus:border-emerald-400 rounded-xl px-3.5 py-2.5 text-sm font-bold text-white shadow-inner">
             </select>
           </div>
 
-          <!-- Pengaturan Baris, Mode Deteksi Jenis Aset & Satuan Default -->
-          <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-4 pt-3 border-t border-slate-800/80 text-xs">
-            <div>
-              <label class="block text-slate-400 mb-1">Deteksi Jenis Aset:</label>
-              <select id="cfg-sumber" onchange="regenerateCurrentScript()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-emerald-300 font-bold">
-                <option value="AUTO" selected>⚡ AUTO (1.3.2 & 1.3.5)</option>
-                <option value="14676">14676 (1.3.5 Buku)</option>
+          <!-- Pengaturan Baris, Mode Deteksi Jenis Aset, Satuan Default & Pengarang Buku -->
+          <div class="mt-4 pt-3 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-center text-xs">
+            <div class="flex items-center gap-1.5 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800">
+              <span class="text-slate-400 font-semibold">Baris:</span>
+              <input id="cfg-start-row" type="number" value="1" min="1" oninput="regenerateCurrentScript()" class="w-12 bg-slate-900 border border-slate-700 rounded px-1.5 py-1 text-center font-mono font-bold text-emerald-400" />
+              <span class="text-slate-500">-</span>
+              <input id="cfg-end-row" type="number" value="16" min="1" oninput="regenerateCurrentScript()" class="w-12 bg-slate-900 border border-slate-700 rounded px-1.5 py-1 text-center font-mono font-bold text-emerald-400" />
+            </div>
+
+            <div class="flex items-center gap-1.5 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800">
+              <span class="text-slate-400 font-semibold whitespace-nowrap">Jenis:</span>
+              <select id="cfg-sumber" onchange="regenerateCurrentScript()" class="w-full bg-slate-900 border border-slate-700 rounded px-1.5 py-1 font-bold text-sky-300">
+                <option value="AUTO" selected>⚡ Auto (1.3.2 & 1.3.5)</option>
+                <option value="14676">📚 1.3.5 Aset Tetap Lain</option>
               </select>
             </div>
-            <div>
-              <label class="block text-slate-400 mb-1">Satuan Default:</label>
-              <select id="cfg-satuan" onchange="regenerateCurrentScript()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sky-300 font-bold">
-                <option value="AUTO" selected>⚡ Otomatis (Unit/Eks)</option>
-                <option value="Unit">Unit (1.3.2)</option>
-                <option value="Buah">Buah (1.3.2)</option>
-                <option value="Set">Set / Paket</option>
-                <option value="Eksemplar">Eksemplar (1.3.5)</option>
+
+            <div class="flex items-center gap-1.5 bg-slate-950 px-3 py-2 rounded-xl border border-slate-800">
+              <span class="text-slate-400 font-semibold whitespace-nowrap">Satuan:</span>
+              <select id="cfg-satuan" onchange="regenerateCurrentScript()" class="w-full bg-slate-900 border border-slate-700 rounded px-1.5 py-1 font-bold text-amber-300">
+                <option value="AUTO" selected>⚡ Otomatis</option>
+                <option value="Eksemplar">📘 Eksemplar</option>
+                <option value="Unit">💻 Unit</option>
+                <option value="Buah">📦 Buah</option>
+                <option value="Set">🧰 Set</option>
               </select>
             </div>
-            <div>
-              <label class="block text-amber-300 font-bold mb-1">Pengarang (Kode 2):</label>
-              <input id="cfg-pengarang" type="text" value="Intan Pariwara" oninput="regenerateCurrentScript()" class="w-full bg-slate-950 border border-amber-500/60 rounded-lg px-2.5 py-2 text-amber-300 font-bold" />
-            </div>
-            <div>
-              <label class="block text-slate-400 mb-1">Mulai Baris:</label>
-              <input id="cfg-start-row" type="number" value="1" min="1" oninput="regenerateCurrentScript()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-emerald-400 font-mono font-bold text-center" />
-            </div>
-            <div>
-              <label class="block text-slate-400 mb-1">Sampai Baris:</label>
-              <input id="cfg-end-row" type="number" value="16" min="1" oninput="regenerateCurrentScript()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-emerald-400 font-mono font-bold text-center" />
+
+            <div class="flex items-center gap-1.5 bg-slate-950 px-3 py-2 rounded-xl border border-amber-500/40">
+              <span class="text-amber-300 font-bold whitespace-nowrap">Pengarang:</span>
+              <input id="cfg-pengarang" type="text" value="Intan Pariwara" oninput="regenerateCurrentScript()" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 font-bold text-white" />
             </div>
           </div>
         </div>
 
-        <!-- Kartu Informasi Header SPK (Untuk Copy Cepat di Gambar 1 E-BMD) -->
+        <!-- Kartu Informasi Header SPK, BAST & SPV (Untuk Copy Cepat di E-BMD) -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
           <div class="flex items-center justify-between mb-3">
             <h3 class="text-xs font-extrabold uppercase tracking-wider text-amber-400">
-              📄 DATA HEADER DOKUMEN SPK (UNTUK COPY-PASTE DI GAMBAR 1 E-BMD)
+              📄 DATA HEADER DOKUMEN SPK, BAST & SPV (KLIK COPY UNTUK TEMPEL KE E-BMD)
             </h3>
             <span id="info-kecamatan" class="text-[11px] font-bold text-sky-400 bg-sky-500/10 px-2.5 py-0.5 rounded-full border border-sky-500/20">-</span>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <!-- Nomor SPK -->
-            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
-              <div class="flex items-center justify-between">
-                <span class="text-slate-400">Nomor Dokumen SPK:</span>
-                <button onclick="copyTextById('info-nosp')" class="px-2.5 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-[11px]">
-                  📋 Copy No. SPK
-                </button>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <!-- 1. Header Dokumen SPK -->
+            <div class="bg-slate-950 border border-amber-500/30 rounded-xl p-3 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between gap-1 mb-1">
+                  <span class="text-[11px] font-extrabold uppercase text-amber-400">1. DOKUMEN SPK</span>
+                  <button onclick="copyTextById('info-nosp')" class="px-2 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-[10px]">
+                    📋 Copy No. SPK
+                  </button>
+                </div>
+                <div id="info-nosp" class="font-mono font-bold text-white text-[11px] break-all leading-snug">-</div>
               </div>
-              <div id="info-nosp" class="font-mono font-bold text-amber-300 text-xs mt-1.5 break-all">-</div>
-            </div>
-
-            <!-- Tanggal & Penyedia -->
-            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
-              <div class="flex items-center justify-between">
-                <span class="text-slate-400">Tgl Dokumen & Penyedia:</span>
-                <div class="flex gap-1.5">
-                  <button onclick="copyTextById('info-tglsp')" class="px-2 py-1 rounded bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 font-bold text-[11px]">
+              <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between gap-1">
+                <div>
+                  <span class="text-[10px] text-slate-400 block">Tgl SPK:</span>
+                  <span id="info-tglsp" class="font-mono font-bold text-amber-300 text-[11px]">30-06-2026</span>
+                </div>
+                <div class="flex gap-1">
+                  <button onclick="copyTextById('info-tglsp')" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-[10px]">
                     Copy Tgl
                   </button>
-                  <button onclick="copyToClipboard('SIPLAH', 'Penyedia SIPLAH disalin!')" class="px-2 py-1 rounded bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-bold text-[11px]">
-                    Copy SIPLAH
+                  <button onclick="copyToClipboard('SIPLAH', 'Penyedia SIPLAH disalin!')" class="px-2 py-1 rounded bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-bold text-[10px]">
+                    SIPLAH
                   </button>
                 </div>
               </div>
-              <div class="mt-1.5 flex items-center justify-between font-mono font-bold text-white">
-                <span id="info-tglsp">30-06-2026</span>
-                <span class="text-emerald-400">Penyedia: SIPLAH</span>
+            </div>
+
+            <!-- 2. Header Dokumen BAST -->
+            <div class="bg-slate-950 border border-sky-500/30 rounded-xl p-3 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between gap-1 mb-1">
+                  <span class="text-[11px] font-extrabold uppercase text-sky-400">2. DOKUMEN BAST</span>
+                  <button onclick="copyTextById('info-nobast')" class="px-2 py-1 rounded bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 font-bold text-[10px]">
+                    📋 Copy No. BAST
+                  </button>
+                </div>
+                <div id="info-nobast" class="font-mono font-bold text-white text-[11px] break-all leading-snug">-</div>
+              </div>
+              <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between gap-1">
+                <div>
+                  <span class="text-[10px] text-slate-400 block">Tgl BAST:</span>
+                  <span id="info-tglbast" class="font-mono font-bold text-sky-300 text-[11px]">30-06-2026</span>
+                </div>
+                <button onclick="copyTextById('info-tglbast')" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-[10px]">
+                  Copy Tgl BAST
+                </button>
               </div>
             </div>
 
-            <!-- Total Baris & Eksemplar -->
-            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
-              <div class="text-slate-400">Total Volume Kertas Kerja:</div>
-              <div class="mt-1 flex items-baseline gap-2">
-                <span id="info-baris" class="text-base font-extrabold text-white">0 Baris</span>
+            <!-- 3. Header Dokumen SPV (SP2D/Verifikasi) -->
+            <div class="bg-slate-950 border border-emerald-500/30 rounded-xl p-3 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between gap-1 mb-1">
+                  <span class="text-[11px] font-extrabold uppercase text-emerald-400">3. DOKUMEN SPV</span>
+                  <button onclick="copyTextById('info-nospv')" class="px-2 py-1 rounded bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-bold text-[10px]">
+                    📋 Copy No. SPV
+                  </button>
+                </div>
+                <div id="info-nospv" class="font-mono font-bold text-white text-[11px] break-all leading-snug">-</div>
+              </div>
+              <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between gap-1">
+                <div>
+                  <span class="text-[10px] text-slate-400 block">Tgl SPV:</span>
+                  <span id="info-tglspv" class="font-mono font-bold text-emerald-300 text-[11px]">30-06-2026</span>
+                </div>
+                <button onclick="copyTextById('info-tglspv')" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-[10px]">
+                  Copy Tgl SPV
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ringkasan Volume & Total Nilai Pengadaan -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3 text-xs">
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+              <span class="text-slate-400">Total Volume Kertas Kerja:</span>
+              <div class="flex items-baseline gap-1.5">
+                <span id="info-baris" class="text-sm font-extrabold text-white">0 Baris</span>
                 <span id="info-volume" class="text-xs font-bold text-sky-400">(0 Eksemplar)</span>
               </div>
-              <div id="info-nobast" class="text-[11px] font-mono text-slate-400 mt-1 truncate">-</div>
             </div>
 
-            <!-- Total Nilai Rupiah & No SPV -->
-            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
-              <div class="text-slate-400">Total Nilai Pengadaan:</div>
-              <div id="info-totalrp" class="mt-1 text-base font-extrabold text-emerald-400 font-mono">Rp 0,00</div>
-              <div id="info-nospv" class="text-[11px] font-mono text-slate-400 mt-1 truncate">-</div>
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+              <span class="text-slate-400">Total Nilai Pengadaan:</span>
+              <div class="flex items-center gap-2">
+                <span id="info-totalrp" class="text-sm font-extrabold text-emerald-400 font-mono">Rp 0,00</span>
+                <button onclick="copyRawTotalRp()" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-300" title="Copy angka nominal total">
+                  Copy Angka
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -607,11 +662,15 @@
           headerIdx = i;
           rowStr.forEach(function(colName, idx) {
             if (colName.includes('KECAMATAN')) colMap.kec = idx;
-            else if (colName.includes('NAMA SEKOLAH') || colName === 'SEKOLAH' || colName.includes('UNIT')) colMap.sek = idx;
+            else if (colName.includes('NAMA SEKOLAH') || colName === 'SEKOLAH' || colName.includes('UNIT')) {
+              if (colMap.sek === undefined) colMap.sek = idx;
+            }
             else if (colName.includes('SURAT PESANAN') && colName.includes('NO')) colMap.noSp = idx;
             else if (colName.includes('SURAT PESANAN') && colName.includes('TGL')) colMap.tglSp = idx;
             else if (colName.includes('NO. BAST') || colName.includes('NOMOR BAST')) colMap.noBast = idx;
+            else if (colName.includes('TGL BAST') || colName.includes('TGL. BAST') || colName.includes('TANGGAL BAST')) colMap.tglBast = idx;
             else if (colName.includes('NO. SPV') || colName.includes('NOMOR SPV')) colMap.noSpv = idx;
+            else if (colName.includes('TGL. SPV') || colName.includes('TGL SPV') || colName.includes('TANGGAL SPV')) colMap.tglSpv = idx;
             else if (colName.includes('KODE REKENING E-BMD') || colName === 'KODE REKENING' || colName.includes('KODE BARANG')) colMap.kode = idx;
             else if (colName.includes('NAMA REKENING BELANJA E-BMD')) colMap.rek = idx;
             else if (colName === 'NAMA BELANJA' || colName.includes('NAMA BARANG') || colName.includes('JUDUL') || colName.includes('SPESIFIKASI')) {
@@ -641,7 +700,9 @@
         let noSp = '';
         let tglSp = '';
         let noBast = '';
+        let tglBast = '';
         let noSpv = '';
+        let tglSpv = '';
 
         if (headerIdx !== -1 && colMap.kode !== undefined) {
           kode = String(row[colMap.kode] || '').trim().replace(/\s+/g, '');
@@ -655,7 +716,9 @@
           noSp = colMap.noSp !== undefined ? String(row[colMap.noSp] || '').trim() : '';
           tglSp = colMap.tglSp !== undefined ? String(row[colMap.tglSp] || '').trim() : '';
           noBast = colMap.noBast !== undefined ? String(row[colMap.noBast] || '').trim() : '';
+          tglBast = colMap.tglBast !== undefined ? String(row[colMap.tglBast] || '').trim() : '';
           noSpv = colMap.noSpv !== undefined ? String(row[colMap.noSpv] || '').trim() : '';
+          tglSpv = colMap.tglSpv !== undefined ? String(row[colMap.tglSpv] || '').trim() : '';
         } else {
           const foundIdx = row.findIndex(function(cell) {
             return /^1\.3\.\d+(\.\d+)+$/.test(String(cell || '').trim());
@@ -681,14 +744,17 @@
         const schoolKey = schoolNameFinal + '__' + (noSp || 'SPK');
 
         if (!schoolMap.has(schoolKey)) {
+          const defTgl = tglSp || '30-06-2026';
           schoolMap.set(schoolKey, {
             id: schoolKey,
             sekolah: schoolNameFinal,
             kecamatan: kecamatan || 'KAB. DONGGALA',
             noSp: noSp || '-',
-            tglSp: tglSp || '30-06-2026',
+            tglSp: defTgl,
             noBast: noBast || '-',
+            tglBast: tglBast || defTgl,
             noSpv: noSpv || '-',
+            tglSpv: tglSpv || defTgl,
             items: []
           });
         }
@@ -777,19 +843,70 @@
     }
 
     function renderSchoolSelector() {
+      filterSchoolSelector();
+    }
+
+    function filterSchoolSelector() {
       const sel = document.getElementById('school-selector');
-      document.getElementById('school-count-badge').innerText = schoolsData.length;
-      sel.innerHTML = schoolsData.map(function(s, idx) {
+      const searchInput = document.getElementById('school-search-input');
+      const clearBtn = document.getElementById('clear-school-search');
+      const kw = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+      if (clearBtn) {
+        if (kw.length > 0) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
+      }
+
+      const matched = [];
+      schoolsData.forEach(function(s, idx) {
+        const hay = (s.sekolah + ' ' + (s.kecamatan || '') + ' ' + (s.noSp || '') + ' ' + (s.noBast || '') + ' ' + (s.noSpv || '')).toLowerCase();
+        if (!kw || hay.includes(kw)) {
+          matched.push({ school: s, origIdx: idx });
+        }
+      });
+
+      document.getElementById('school-count-badge').innerText = matched.length + (kw ? ' dari ' + schoolsData.length : '');
+
+      if (matched.length === 0) {
+        sel.innerHTML = '<option value="-1">❌ Sekolah "' + kw + '" tidak ditemukan</option>';
+        return;
+      }
+
+      sel.innerHTML = matched.map(function(entry) {
+        const s = entry.school;
+        const idx = entry.origIdx;
         const totRp = s.items.reduce(function(acc, it) { return acc + (it.jumlah * it.harga); }, 0);
         const totVol = s.items.reduce(function(acc, it) { return acc + it.jumlah; }, 0);
         const is132 = s.items.some(function(it) { return it.kode.startsWith('1.3.2'); });
         const unitLabel = is132 ? 'Unit' : 'Eks';
-        return '<option value="' + idx + '">' + (idx + 1) + '. ' + s.sekolah + ' — (' + s.items.length + ' Baris | ' + totVol + ' ' + unitLabel + ' | Rp ' + totRp.toLocaleString('id-ID') + ')</option>';
+        const selectedAttr = (idx === currentSchoolIndex) ? 'selected' : '';
+        return '<option value="' + idx + '" ' + selectedAttr + '>' + (idx + 1) + '. ' + s.sekolah + ' — (' + s.items.length + ' Baris | ' + totVol + ' ' + unitLabel + ' | Rp ' + totRp.toLocaleString('id-ID') + ')</option>';
       }).join('');
+
+      // Jika sedang mencari dan sekolah aktif tidak ada di hasil filter, otomatis pilih hasil teratas
+      const stillInList = matched.some(function(m) { return m.origIdx === currentSchoolIndex; });
+      if (!stillInList && matched.length > 0) {
+        selectSchool(matched[0].origIdx);
+      }
+    }
+
+    function clearSchoolSearch() {
+      const searchInput = document.getElementById('school-search-input');
+      if (searchInput) searchInput.value = '';
+      filterSchoolSelector();
+    }
+
+    function copyRawTotalRp() {
+      const school = schoolsData[currentSchoolIndex];
+      if (!school) return;
+      const totalRp = school.items.reduce(function(a, b) { return a + (b.jumlah * b.harga); }, 0);
+      copyToClipboard(String(totalRp), 'Nominal Total Rp ' + totalRp.toLocaleString('id-ID') + ' disalin!');
     }
 
     function selectSchool(index) {
-      currentSchoolIndex = parseInt(index, 10) || 0;
+      const parsedIdx = parseInt(index, 10);
+      if (isNaN(parsedIdx) || parsedIdx < 0) return;
+      currentSchoolIndex = parsedIdx;
       const school = schoolsData[currentSchoolIndex];
       if (!school) return;
 
@@ -798,15 +915,18 @@
       const totalRp = school.items.reduce(function(a, b) { return a + (b.jumlah * b.harga); }, 0);
       const has132 = school.items.some(function(it) { return it.kode.startsWith('1.3.2'); });
       const unitName = has132 ? 'Unit/Buah' : 'Eksemplar';
+      const defaultDate = school.tglSp || '30-06-2026';
 
       document.getElementById('cfg-start-row').value = 1;
       document.getElementById('cfg-end-row').value = totalBaris;
 
       document.getElementById('info-kecamatan').innerText = school.kecamatan;
-      document.getElementById('info-nosp').innerText = school.noSp;
-      document.getElementById('info-tglsp').innerText = school.tglSp || '30-06-2026';
-      document.getElementById('info-nobast').innerText = 'BAST: ' + (school.noBast || '-');
-      document.getElementById('info-nospv').innerText = 'SPV: ' + (school.noSpv || '-');
+      document.getElementById('info-nosp').innerText = school.noSp || '-';
+      document.getElementById('info-tglsp').innerText = defaultDate;
+      document.getElementById('info-nobast').innerText = school.noBast || '-';
+      document.getElementById('info-tglbast').innerText = school.tglBast || defaultDate;
+      document.getElementById('info-nospv').innerText = school.noSpv || '-';
+      document.getElementById('info-tglspv').innerText = school.tglSpv || defaultDate;
       document.getElementById('info-baris').innerText = totalBaris + ' Baris';
       document.getElementById('info-volume').innerText = '(' + totalVol + ' ' + unitName + ')';
       document.getElementById('info-totalrp').innerText = formatRupiah(totalRp);
