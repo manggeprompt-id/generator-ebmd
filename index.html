@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>E-BMD Donggala Turbo Generator v5.0 — Multi-KIB (1.3.2 & 1.3.5)</title>
+  <title>E-BMD Donggala Turbo Generator v6.0 — Dual Script (SPK + BAST Intan Pariwara)</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- SheetJS untuk membaca file Excel (.xlsx / .xls / .csv) langsung di browser -->
@@ -71,18 +71,21 @@
         <div>
           <div class="flex items-center gap-2.5 flex-wrap">
             <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white">E-BMD DONGGALA TURBO GENERATOR</h1>
-            <span class="px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full">v5.0 MULTI-KIB AUTO-DETECT (1.3.2 & 1.3.5)</span>
+            <span class="px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full">v6.0 DUAL-CODE (KODE 1: SPK + KODE 2: BAST/JUDUL BUKU)</span>
           </div>
-          <p class="text-xs text-slate-400">Support Peralatan & Mesin (`1.3.2`) + Aset Tetap Lainnya/Buku (`1.3.5`) • Disdikpora Kab. Donggala</p>
+          <p class="text-xs text-slate-400">Otomatisasi Penuh Tahap 1 (SPK) & Tahap 2 (BAST / Judul Buku + Pengarang "Intan Pariwara") • Disdikpora Kab. Donggala</p>
         </div>
       </div>
 
       <div class="flex flex-wrap items-center gap-2.5">
-        <button onclick="copyGeneratedScript()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg shadow-emerald-600/30 transition flex items-center gap-1.5">
-          <span>📋 Copy Script Console Sekolah Aktif</span>
+        <button onclick="switchScriptMode('SPK'); copyGeneratedScript();" class="px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg shadow-emerald-600/30 transition flex items-center gap-1.5">
+          <span>📋 Copy KODE 1 (SPK)</span>
         </button>
-        <button onclick="downloadThisHtmlFile()" class="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-xs shadow-lg shadow-sky-600/30 transition flex items-center gap-1.5" title="Download file index.html v5.0 ini untuk di-upload ke GitHub Anda">
-          <span>💾 Download `index.html` (Update GitHub v5.0)</span>
+        <button onclick="switchScriptMode('BAST'); copyGeneratedScript();" class="px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-amber-500/30 transition flex items-center gap-1.5">
+          <span>📘 Copy KODE 2 (BAST / Intan Pariwara)</span>
+        </button>
+        <button onclick="downloadThisHtmlFile()" class="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-xs shadow-lg shadow-sky-600/30 transition flex items-center gap-1.5" title="Download file index.html v6.0 ini untuk di-upload ke GitHub Anda">
+          <span>💾 Download `index.html` (v6.0)</span>
         </button>
       </div>
     </div>
@@ -96,22 +99,22 @@
       <div class="flex items-start gap-3 bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
         <span class="w-6 h-6 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 flex items-center justify-center font-extrabold shrink-0">1</span>
         <div>
-          <div class="font-bold text-white">Masukkan File Excel (.xlsx)</div>
-          <p class="text-slate-400 mt-0.5">Klik kotak Upload Excel di kiri bawah untuk memilih file kertas kerja sekolah (otomatis terbaca).</p>
+          <div class="font-bold text-white">Upload File Excel (.xlsx) Sekolah</div>
+          <p class="text-slate-400 mt-0.5">Satu file Excel otomatis menghasilkan <b>2 Kode Script</b> sekaligus (Kode 1 untuk SPK & Kode 2 untuk BAST).</p>
         </div>
       </div>
       <div class="flex items-start gap-3 bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
         <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 flex items-center justify-center font-extrabold shrink-0">2</span>
         <div>
-          <div class="font-bold text-white">Klik Tombol Hijau "COPY SCRIPT CONSOLE"</div>
-          <p class="text-slate-400 mt-0.5">Kotak kode di sebelah kanan otomatis berubah sesuai sekolah yang Anda upload/pilih.</p>
+          <div class="font-bold text-white">Pilih "KODE 1 (SPK)" atau "KODE 2 (BAST)"</div>
+          <p class="text-slate-400 mt-0.5"><b>KODE 1</b> untuk input kode & harga di SPK. <b>KODE 2</b> untuk input Judul Buku (Nama Belanja) & Pengarang <b>"Intan Pariwara"</b>.</p>
         </div>
       </div>
       <div class="flex items-start gap-3 bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
         <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center justify-center font-extrabold shrink-0">3</span>
         <div>
-          <div class="font-bold text-white">Paste di Console (F12) Halaman Rincian E-BMD</div>
-          <p class="text-slate-400 mt-0.5">Buka halaman Rincian (Gambar 3) di E-BMD, tekan <b>F12 ➔ Console</b>, Paste (<b>Ctrl+V</b>) lalu tekan <b>Enter</b>!</p>
+          <div class="font-bold text-white">Paste di Console (F12) Halaman E-BMD</div>
+          <p class="text-slate-400 mt-0.5">Buka halaman Rincian SPK atau Rincian BAST di E-BMD, tekan <b>F12 ➔ Console</b>, Paste (<b>Ctrl+V</b>) lalu tekan <b>Enter</b>!</p>
         </div>
       </div>
     </div>
@@ -161,23 +164,27 @@
           </div>
 
           <!-- Pengaturan Baris, Mode Deteksi Jenis Aset & Satuan Default -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-3 border-t border-slate-800/80 text-xs">
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-4 pt-3 border-t border-slate-800/80 text-xs">
             <div>
               <label class="block text-slate-400 mb-1">Deteksi Jenis Aset:</label>
               <select id="cfg-sumber" onchange="regenerateCurrentScript()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-emerald-300 font-bold">
-                <option value="AUTO" selected>⚡ AUTO-DETECT (1.3.2 & 1.3.5)</option>
-                <option value="14676">Paksa 14676 (1.3.5 Buku)</option>
+                <option value="AUTO" selected>⚡ AUTO (1.3.2 & 1.3.5)</option>
+                <option value="14676">14676 (1.3.5 Buku)</option>
               </select>
             </div>
             <div>
               <label class="block text-slate-400 mb-1">Satuan Default:</label>
               <select id="cfg-satuan" onchange="regenerateCurrentScript()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sky-300 font-bold">
-                <option value="AUTO" selected>⚡ Otomatis (Unit / Eks)</option>
-                <option value="Unit">Unit (Peralatan & Mesin)</option>
-                <option value="Buah">Buah (Peralatan & Mesin)</option>
+                <option value="AUTO" selected>⚡ Otomatis (Unit/Eks)</option>
+                <option value="Unit">Unit (1.3.2)</option>
+                <option value="Buah">Buah (1.3.2)</option>
                 <option value="Set">Set / Paket</option>
-                <option value="Eksemplar">Eksemplar (Buku 1.3.5)</option>
+                <option value="Eksemplar">Eksemplar (1.3.5)</option>
               </select>
+            </div>
+            <div>
+              <label class="block text-amber-300 font-bold mb-1">Pengarang (Kode 2):</label>
+              <input id="cfg-pengarang" type="text" value="Intan Pariwara" oninput="regenerateCurrentScript()" class="w-full bg-slate-950 border border-amber-500/60 rounded-lg px-2.5 py-2 text-amber-300 font-bold" />
             </div>
             <div>
               <label class="block text-slate-400 mb-1">Mulai Baris:</label>
@@ -240,25 +247,25 @@
               <div id="info-nobast" class="text-[11px] font-mono text-slate-400 mt-1 truncate">-</div>
             </div>
 
-            <!-- Total Nilai Rupiah -->
-            <div class="bg-emerald-950/30 border border-emerald-500/40 rounded-xl p-3">
-              <div class="text-emerald-300 font-semibold">Total Nilai SPK (Belanja Modal):</div>
-              <div id="info-totalrp" class="text-lg font-extrabold font-mono text-emerald-400 mt-1">Rp 0,00</div>
-              <div id="info-nospv" class="text-[11px] font-mono text-emerald-300/70 mt-1 truncate">-</div>
+            <!-- Total Nilai Rupiah & No SPV -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
+              <div class="text-slate-400">Total Nilai Pengadaan:</div>
+              <div id="info-totalrp" class="mt-1 text-base font-extrabold text-emerald-400 font-mono">Rp 0,00</div>
+              <div id="info-nospv" class="text-[11px] font-mono text-slate-400 mt-1 truncate">-</div>
             </div>
           </div>
         </div>
 
       </div>
 
-      <!-- KOLOM KANAN (5 Kolom): KOTAK SCRIPT CONSOLE SIAP PAKAI (SELALU TAMPIL) -->
+      <!-- KOLOM KANAN (5 Kolom): KOTAK SCRIPT CONSOLE SIAP PAKAI (2 PILIHAN KODE: SPK & BAST) -->
       <div class="lg:col-span-5 flex flex-col">
         <div id="script-card" class="bg-slate-900 border-2 border-emerald-500/70 rounded-2xl p-5 shadow-2xl flex-1 flex flex-col justify-between animate-border-glow">
           <div>
             <div class="flex items-center justify-between gap-2 border-b border-slate-800 pb-3 mb-3">
               <div>
                 <span class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-400 block">
-                  💻 LANGKAH 2: AMBIL SCRIPT CONSOLE
+                  💻 LANGKAH 2: PILIH & AMBIL SCRIPT CONSOLE
                 </span>
                 <h2 id="script-school-title" class="text-sm sm:text-base font-extrabold text-white mt-0.5">
                   SDN 4 SOJOL UTARA
@@ -269,24 +276,36 @@
               </span>
             </div>
 
+            <!-- Selector 2 Mode Script: KODE 1 (SPK) vs KODE 2 (BAST / Judul Buku + Intan Pariwara) -->
+            <div class="grid grid-cols-2 gap-2 p-1.5 bg-slate-950 rounded-xl border border-slate-800 mb-3">
+              <button id="tab-mode-spk" onclick="switchScriptMode('SPK')" class="py-2.5 px-3 rounded-lg font-extrabold text-xs transition flex flex-col items-center justify-center gap-0.5 bg-emerald-600 text-white shadow-lg">
+                <span>📦 KODE 1: INPUT SPK</span>
+                <span class="text-[10px] font-normal opacity-90">Input Kode Aset, Vol & Harga</span>
+              </button>
+              <button id="tab-mode-bast" onclick="switchScriptMode('BAST')" class="py-2.5 px-3 rounded-lg font-extrabold text-xs transition flex flex-col items-center justify-center gap-0.5 bg-slate-900 text-amber-300 hover:bg-slate-800 border border-amber-500/30">
+                <span>📘 KODE 2: RINCIAN BAST</span>
+                <span class="text-[10px] font-normal opacity-90">Judul Buku + "Intan Pariwara"</span>
+              </button>
+            </div>
+
             <!-- Tombol Utama Copy Script -->
-            <button onclick="copyGeneratedScript()" class="w-full py-4 px-5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-extrabold text-sm shadow-xl shadow-emerald-500/25 transition transform active:scale-95 flex items-center justify-center gap-2 mb-3">
+            <button id="main-copy-btn" onclick="copyGeneratedScript()" class="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-extrabold text-sm shadow-xl shadow-emerald-500/25 transition transform active:scale-95 flex items-center justify-center gap-2 mb-3">
               <span class="text-lg">📋</span>
-              <span>COPY SCRIPT CONSOLE SEKOLAH INI (1-KLIK)</span>
+              <span id="main-copy-btn-text">COPY KODE 1 (INPUT SPK) SEKOLAH INI</span>
             </button>
 
-            <div class="text-[11px] text-slate-300 bg-slate-950/90 border border-slate-800 rounded-xl p-3 mb-3 leading-relaxed">
-              <b class="text-amber-300">Cara Pakai di E-BMD:</b> Setelah klik tombol hijau di atas, buka tab E-BMD halaman <b>Rincian Barang (Gambar 3)</b> ➔ Tekan <b>F12</b> (pilih tab <b>Console</b>) ➔ Tekan <b>Ctrl + V</b> lalu tekan <b>Enter</b>. Akan muncul panel hijau di pojok kanan bawah E-BMD, lalu klik <b>"🚀 EKSEKUSI SEKARANG"</b>!
+            <div id="mode-helper-box" class="text-[11px] text-slate-300 bg-slate-950/90 border border-slate-800 rounded-xl p-3 mb-3 leading-relaxed">
+              <b class="text-emerald-400">Cara Pakai KODE 1 (SPK):</b> Buka halaman <b>Rincian SPK (Gambar 3)</b> ➔ Tekan <b>F12 (Console)</b> ➔ Paste (<b>Ctrl+V</b>) & Enter ➔ Klik <b>"🚀 EKSEKUSI SEKARANG"</b>.
             </div>
           </div>
 
           <!-- Textarea Script Console -->
           <div class="flex-1 flex flex-col">
             <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-              <span>Kode Script Console (Oomatis Ter-Update):</span>
+              <span id="script-box-label">Kode Script 1 — Input SPK (Otomatis Ter-Update):</span>
               <span class="font-mono text-emerald-400">Ready to Paste</span>
             </div>
-            <textarea id="generated-script-box" readonly class="w-full flex-1 min-h-[250px] bg-slate-950 text-emerald-400 font-mono text-[11px] p-3.5 rounded-xl border border-slate-800 focus:outline-none custom-scroll leading-relaxed selection:bg-emerald-500 selection:text-slate-950"></textarea>
+            <textarea id="generated-script-box" readonly class="w-full flex-1 min-h-[235px] bg-slate-950 text-emerald-400 font-mono text-[11px] p-3.5 rounded-xl border border-slate-800 focus:outline-none custom-scroll leading-relaxed selection:bg-emerald-500 selection:text-slate-950"></textarea>
           </div>
         </div>
       </div>
@@ -495,6 +514,39 @@
 
     let schoolsData = [];
     let currentSchoolIndex = 0;
+    let currentScriptMode = 'SPK'; // 'SPK' (Kode 1) atau 'BAST' (Kode 2)
+
+    function switchScriptMode(mode) {
+      currentScriptMode = mode === 'BAST' ? 'BAST' : 'SPK';
+      const btnSpk = document.getElementById('tab-mode-spk');
+      const btnBast = document.getElementById('tab-mode-bast');
+      const mainBtn = document.getElementById('main-copy-btn');
+      const mainBtnTxt = document.getElementById('main-copy-btn-text');
+      const helperBox = document.getElementById('mode-helper-box');
+      const boxLabel = document.getElementById('script-box-label');
+      const scriptBox = document.getElementById('generated-script-box');
+
+      if (currentScriptMode === 'BAST') {
+        btnBast.className = 'py-2.5 px-3 rounded-lg font-extrabold text-xs transition flex flex-col items-center justify-center gap-0.5 bg-amber-500 text-slate-950 shadow-lg';
+        btnSpk.className = 'py-2.5 px-3 rounded-lg font-extrabold text-xs transition flex flex-col items-center justify-center gap-0.5 bg-slate-900 text-emerald-300 hover:bg-slate-800 border border-emerald-500/30';
+        mainBtn.className = 'w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-extrabold text-sm shadow-xl shadow-amber-500/25 transition transform active:scale-95 flex items-center justify-center gap-2 mb-3';
+        mainBtnTxt.innerText = 'COPY KODE 2 (RINCIAN BAST / JUDUL BUKU) SEKOLAH INI';
+        boxLabel.innerText = 'Kode Script 2 — Rincian BAST / Judul Buku + Pengarang "Intan Pariwara":';
+        scriptBox.classList.remove('text-emerald-400');
+        scriptBox.classList.add('text-amber-300');
+        helperBox.innerHTML = '<b class="text-amber-300">Cara Pakai KODE 2 (Menu Rincian Barang / BAST):</b> Buka form <b>Rincian Barang</b> (yang ada dropdown <i>Kodefikasi Barang</i> & kolom <i>Judul / Pengarang</i>) ➔ Tekan <b>F12 (Console)</b> ➔ Paste (<b>Ctrl+V</b>) & Enter. Script otomatis memilih Rekening Belanja, mencocokkan Kodefikasi Barang dengan <b>NAMA BELANJA</b>, mengisi Pengarang <b>"Intan Pariwara"</b>, lalu menyimpan semuanya sampai selesai!';
+      } else {
+        btnSpk.className = 'py-2.5 px-3 rounded-lg font-extrabold text-xs transition flex flex-col items-center justify-center gap-0.5 bg-emerald-600 text-white shadow-lg';
+        btnBast.className = 'py-2.5 px-3 rounded-lg font-extrabold text-xs transition flex flex-col items-center justify-center gap-0.5 bg-slate-900 text-amber-300 hover:bg-slate-800 border border-amber-500/30';
+        mainBtn.className = 'w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-extrabold text-sm shadow-xl shadow-emerald-500/25 transition transform active:scale-95 flex items-center justify-center gap-2 mb-3';
+        mainBtnTxt.innerText = 'COPY KODE 1 (INPUT SPK) SEKOLAH INI';
+        boxLabel.innerText = 'Kode Script 1 — Input SPK (Otomatis Ter-Update):';
+        scriptBox.classList.remove('text-amber-300');
+        scriptBox.classList.add('text-emerald-400');
+        helperBox.innerHTML = '<b class="text-emerald-400">Cara Pakai KODE 1 (Menu SPK Aset Tetap):</b> Buka halaman <b>Rincian SPK (Gambar 3)</b> ➔ Tekan <b>F12 (Console)</b> ➔ Paste (<b>Ctrl+V</b>) & Enter ➔ Klik <b>"🚀 EKSEKUSI SEKARANG"</b>.';
+      }
+      regenerateCurrentScript();
+    }
 
     function showToast(msg, icon) {
       const t = document.getElementById('toast');
@@ -816,10 +868,15 @@
       }).join('');
     }
 
-    // Pembuat Script Console E-BMD v5.0 (MULTI-KIB: Auto-Detect 1.3.1, 1.3.2, 1.3.3, 1.3.4, 1.3.5 + Auto Klik Rekening Sesuai + Dynamic Satuan)
+    // Pembuat Script Console E-BMD v6.0 (MENDUKUNG KODE 1: SPK & KODE 2: RINCIAN BAST / JUDUL BUKU + INTAN PARIWARA)
     function regenerateCurrentScript() {
       const school = schoolsData[currentSchoolIndex];
       if (!school) return;
+
+      if (currentScriptMode === 'BAST') {
+        document.getElementById('generated-script-box').value = generateBastScript(school);
+        return;
+      }
 
       const cfgSumber = document.getElementById('cfg-sumber').value || 'AUTO';
       const cfgSatuan = document.getElementById('cfg-satuan').value || 'AUTO';
@@ -1132,10 +1189,319 @@
       document.getElementById('generated-script-box').value = lines.join('\n');
     }
 
+    // ============================================================================
+    // GENERATOR KODE 2: MENU RINCIAN BARANG / BAST (JUDUL BUKU = NAMA BELANJA, PENGARANG = INTAN PARIWARA)
+    // ============================================================================
+    function generateBastScript(school) {
+      const pengarangDefault = (document.getElementById('cfg-pengarang').value || 'Intan Pariwara').trim();
+      const totVol = school.items.reduce(function(a, b) { return a + b.jumlah; }, 0);
+      const totRp = school.items.reduce(function(a, b) { return a + (b.jumlah * b.harga); }, 0);
+
+      const cleanItems = school.items.map(function(it) {
+        return {
+          no: it.no,
+          kode: it.kode.trim(),
+          nama: (it.nama || '').trim(),
+          merk: (it.merk || '').trim(),
+          jumlah: it.jumlah,
+          harga: it.harga
+        };
+      });
+
+      const lines = [
+        "(async function() {",
+        "  const old = document.getElementById('ebmd-bast-panel');",
+        "  if (old) old.remove();",
+        "",
+        "  // ==========================================================================",
+        "  // 📘 KODE 2 (RINCIAN BARANG / BAST): " + school.sekolah + " (" + school.noSp + ")",
+        "  // Otomatis Pilih Rekening Belanja -> Pilih Kodefikasi Barang -> Isi Judul (NAMA BELANJA) -> Pengarang '" + pengarangDefault.replace(/'/g, "") + "' -> Simpan",
+        "  // ==========================================================================",
+        "  const excelItems = " + JSON.stringify(cleanItems, null, 2) + ";",
+        "  const defaultPengarang = '" + pengarangDefault.replace(/'/g, "\\'") + "';",
+        "  const storageKeyUsed = 'ebmd_bast_used_' + (location.pathname || 'default');",
+        "",
+        "  const sleep = function(ms) { return new Promise(function(r) { setTimeout(r, ms); }); };",
+        "",
+        "  function cleanNumber(str) {",
+        "    if (typeof str === 'number') return Math.round(str);",
+        "    if (!str) return 0;",
+        "    const s = String(str).trim().replace(/,00$/, '').replace(/\\.00$/, '');",
+        "    const n = parseInt(s.replace(/[^\\d]/g, ''), 10);",
+        "    return isNaN(n) ? 0 : n;",
+        "  }",
+        "",
+        "  function setInputVal(el, val) {",
+        "    if (!el) return;",
+        "    el.focus();",
+        "    const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;",
+        "    if (setter) setter.call(el, val);",
+        "    else el.value = val;",
+        "    el.dispatchEvent(new Event('input', { bubbles: true }));",
+        "    el.dispatchEvent(new Event('change', { bubbles: true }));",
+        "    el.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));",
+        "    el.blur();",
+        "  }",
+        "",
+        "  function triggerSelectChange(selEl, val) {",
+        "    if (!selEl) return;",
+        "    selEl.value = val;",
+        "    selEl.dispatchEvent(new Event('change', { bubbles: true }));",
+        "    if (window.jQuery) {",
+        "      window.jQuery(selEl).val(val).trigger('change').trigger('select2:select');",
+        "    }",
+        "  }",
+        "",
+        "  // Cari elemen <select> atau <input> berdasarkan teks label di sebelah kirinya",
+        "  function findControlByLabel(keywords, tagFilter) {",
+        "    const rows = Array.from(document.querySelectorAll('tr, .form-group, .row'));",
+        "    for (let i = 0; i < rows.length; i++) {",
+        "      const r = rows[i];",
+        "      const labelEl = r.querySelector('label, td:first-child, th:first-child, .col-md-2, .col-md-3, .col-sm-2, .col-sm-3');",
+        "      if (!labelEl) continue;",
+        "      const txt = (labelEl.innerText || '').toLowerCase().trim();",
+        "      if (keywords.some(function(k) { return txt.includes(k); })) {",
+        "        const ctrl = r.querySelector(tagFilter || 'select, input:not([type=\"hidden\"])');",
+        "        if (ctrl) return ctrl;",
+        "      }",
+        "    }",
+        "    return null;",
+        "  }",
+        "",
+        "  // 1. Identifikasi semua elemen Form Rincian Barang (BAST)",
+        "  const selRekening = findControlByLabel(['rekening belanja'], 'select') || document.querySelector('select[name*=\"Rekening\"], select[id*=\"Rekening\"]');",
+        "  const selKodefikasi = findControlByLabel(['kodefikasi barang', 'kode barang'], 'select') || document.querySelector('select[name*=\"Barang\"], select[id*=\"Barang\"], select[name*=\"Rincian\"], select[id*=\"Rincian\"]');",
+        "  const inpJudul = findControlByLabel(['judul'], 'input, textarea') || document.querySelector('input[name=\"judul\"], #judul, input[name*=\"Judul\"], #Judul');",
+        "  const inpPengarang = findControlByLabel(['pengarang', 'pencipta'], 'input, textarea') || document.querySelector('input[name=\"pencipta\"], #pencipta, input[name=\"pengarang\"], #pengarang, input[name*=\"Pengarang\"]');",
+        "  const inpHarga = findControlByLabel(['harga satuan'], 'input') || document.querySelector('input[name*=\"harga\"], input[id*=\"harga\"], input[name=\"nominal\"]');",
+        "  const inpJumlahSpk = findControlByLabel(['jumlah barang'], 'input') || document.querySelector('input[name*=\"jumlah\"], input[name=\"volume\"]');",
+        "",
+        "  // Buat UI Panel KODE 2 di pojok kanan bawah",
+        "  const panel = document.createElement('div');",
+        "  panel.id = 'ebmd-bast-panel';",
+        "  panel.style = 'position:fixed;bottom:15px;right:15px;width:455px;background:#0f172a;color:#f8fafc;z-index:99999999;padding:16px;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,0.9);font-family:system-ui,sans-serif;font-size:12px;border:2px solid #f59e0b;';",
+        "  panel.innerHTML = '<div style=\"display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;border-bottom:1px solid #334155;padding-bottom:8px;\">' +",
+        "    '<span style=\"font-weight:800;font-size:13px;color:#fbbf24;\">📘 KODE 2 (BAST / JUDUL BUKU): " + school.sekolah.replace(/'/g, "") + "</span>' +",
+        "    '<span id=\"bast-counter-badge\" style=\"background:#b45309;padding:2px 8px;border-radius:99px;font-weight:bold;font-size:11px;\">' + excelItems.length + ' Buku</span>' +",
+        "  '</div>' +",
+        "  '<div style=\"background:#1e293b;padding:10px;border-radius:8px;margin-bottom:10px;border-left:4px solid #f59e0b;line-height:1.45;\">' +",
+        "    '<div><b>Sekolah:</b> <span style=\"color:#38bdf8;\">" + school.sekolah.replace(/'/g, "") + "</span></div>' +",
+        "    '<div><b>Aturan:</b> Pilih <span style=\"color:#4ade80;\">Kodefikasi Barang (Terpakai BAST : 0)</span> ➔ Isi Judul dari <span style=\"color:#facc15;\">NAMA BELANJA</span> ➔ Pengarang: <span style=\"color:#fbbf24;font-weight:bold;\">' + defaultPengarang + '</span></div>' +",
+        "  '</div>' +",
+        "  '<div style=\"display:flex;gap:8px;margin-bottom:10px;align-items:center;background:#020617;padding:8px;border-radius:6px;\">' +",
+        "    '<label style=\"color:#cbd5e1;font-size:11px;white-space:nowrap;\">Pengarang Buku:</label>' +",
+        "    '<input id=\"bast-pengarang-inp\" type=\"text\" value=\"' + defaultPengarang + '\" style=\"flex:1;padding:5px 8px;background:#1e293b;color:#fbbf24;border:1px solid #f59e0b;border-radius:4px;font-weight:bold;font-size:12px;\">' +",
+        "    '<button id=\"bast-reset-mem\" title=\"Reset riwayat baris yang sudah dipakai\" style=\"padding:5px 8px;background:#334155;color:#cbd5e1;border:none;border-radius:4px;cursor:pointer;font-size:10px;\">🔄 Reset</button>' +",
+        "  '</div>' +",
+        "  '<div style=\"display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;\">' +",
+        "    '<button id=\"bast-fill-one-btn\" style=\"padding:10px;background:#0284c7;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;\">🔍 1. ISI 1 BARANG TERATAS (CEK DULU)</button>' +",
+        "    '<button id=\"bast-turbo-all-btn\" style=\"padding:10px;background:#16a34a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;box-shadow:0 4px 15px rgba(22,163,74,0.4);\">🚀 2. SIMPAN SEMUA OTOMATIS (SAMPAI HABIS)</button>' +",
+        "  '</div>' +",
+        "  '<div id=\"bast-log\" style=\"background:#020617;padding:8px;border-radius:6px;height:150px;overflow-y:auto;font-family:monospace;font-size:11px;color:#94a3b8;border:1px solid #1e293b;\">Siap memproses Kodefikasi Barang BAST...</div>';",
+        "  document.body.appendChild(panel);",
+        "",
+        "  const logBox = document.getElementById('bast-log');",
+        "  function log(msg, color) {",
+        "    const d = document.createElement('div');",
+        "    d.style.color = color || '#94a3b8';",
+        "    d.style.marginBottom = '3px';",
+        "    d.innerText = msg;",
+        "    logBox.appendChild(d);",
+        "    logBox.scrollTop = logBox.scrollHeight;",
+        "  }",
+        "",
+        "  document.getElementById('bast-reset-mem').onclick = function() {",
+        "    localStorage.removeItem(storageKeyUsed);",
+        "    log('🔄 Riwayat pencocokan judul buku di-reset.', '#38bdf8');",
+        "  };",
+        "",
+        "  // Langkah A: Pastikan Rekening Belanja terpilih (Belanja Modal Aset Tetap Lainnya BOS / opsi valid pertama)",
+        "  async function ensureRekeningBelanjaSelected() {",
+        "    if (!selRekening) return;",
+        "    const curVal = String(selRekening.value || '').trim();",
+        "    if (!curVal || curVal === '0') {",
+        "      const opts = Array.from(selRekening.options);",
+        "      const targetOpt = opts.find(function(o) { return o.text.toLowerCase().includes('aset tetap lainnya') || o.text.toLowerCase().includes('bos'); }) ||",
+        "                        opts.find(function(o) { return o.value && o.value !== '0' && !o.text.toLowerCase().includes('pilih'); });",
+        "      if (targetOpt) {",
+        "        log('🔄 Memilih Rekening Belanja: ' + targetOpt.text.trim(), '#38bdf8');",
+        "        triggerSelectChange(selRekening, targetOpt.value);",
+        "        await sleep(750);",
+        "      }",
+        "    }",
+        "  }",
+        "",
+        "  // Langkah B: Ambil daftar <option> di Kodefikasi Barang yang belum dipakai BAST ('Terpakai BAST : 0')",
+        "  function getAvailableKodefikasiOptions() {",
+        "    if (!selKodefikasi || !selKodefikasi.options) return [];",
+        "    const allOpts = Array.from(selKodefikasi.options);",
+        "    // Prioritaskan yang tertulis 'Terpakai BAST : 0' atau 'Terpakai BAST: 0'",
+        "    const zeroBast = allOpts.filter(function(o) {",
+        "      const v = String(o.value || '').trim();",
+        "      const t = String(o.text || '').trim();",
+        "      if (!v || v === '0' || t.toLowerCase().includes('pilih')) return false;",
+        "      return /Terpakai\\s*BAST\\s*:\\s*0\\b/i.test(t) || /Terpakai\\s*BAST\\s*:\\s*0[,.]00/i.test(t);",
+        "    });",
+        "    if (zeroBast.length > 0) return zeroBast;",
+        "    // Jika format teks tidak mencantumkan Terpakai BAST : 0, ambil semua option yang punya kode 1.3.x",
+        "    return allOpts.filter(function(o) {",
+        "      const v = String(o.value || '').trim();",
+        "      const t = String(o.text || '').trim();",
+        "      return v && v !== '0' && /1\\.3\\.\\d+/.test(t);",
+        "    });",
+        "  }",
+        "",
+        "  // Langkah C: Cocokkan option Kodefikasi Barang (Kode + Jumlah Item SPK + Harga Satuan di form) dengan baris Kertas Kerja Excel",
+        "  function matchExcelRow(kodeBarang, volSpk, hargaForm, usedNos) {",
+        "    // 1. Cari yang Kode + Volume + Harga Satuan persis sama dan belum dipakai",
+        "    let match = excelItems.find(function(it) {",
+        "      return usedNos.indexOf(it.no) === -1 && it.kode === kodeBarang && it.jumlah === volSpk && (hargaForm <= 0 || it.harga === hargaForm);",
+        "    });",
+        "    // 2. Jika hargaForm belum terbaca saat baru pilih dropdown, cocokkan Kode + Volume saja",
+        "    if (!match) {",
+        "      match = excelItems.find(function(it) {",
+        "        return usedNos.indexOf(it.no) === -1 && it.kode === kodeBarang && it.jumlah === volSpk;",
+        "      });",
+        "    }",
+        "    // 3. Jika masih belum ketemu, cocokkan Kode saja yang belum terpakai",
+        "    if (!match) {",
+        "      match = excelItems.find(function(it) {",
+        "        return usedNos.indexOf(it.no) === -1 && it.kode === kodeBarang;",
+        "      });",
+        "    }",
+        "    // 4. Fallback terakhir: cocokkan Kode meskipun sudah pernah dipakai",
+        "    if (!match) {",
+        "      match = excelItems.find(function(it) { return it.kode === kodeBarang; }) || excelItems[0];",
+        "    }",
+        "    return match;",
+        "  }",
+        "",
+        "  // Fungsi mengisi 1 barang teratas di form (dan mengembalikan objek hasil pencocokan)",
+        "  async function fillTopAvailableItem(optTarget) {",
+        "    await ensureRekeningBelanjaSelected();",
+        "    const avail = getAvailableKodefikasiOptions();",
+        "    document.getElementById('bast-counter-badge').innerText = avail.length + ' Tersisa';",
+        "    const opt = optTarget || avail[0];",
+        "    if (!opt) {",
+        "      log('🎉 Tidak ada lagi barang dengan status (Terpakai BAST : 0) di dropdown!', '#4ade80');",
+        "      return null;",
+        "    }",
+        "",
+        "    const optText = String(opt.text || '').trim();",
+        "    const kodeMatch = optText.match(/(1\\.3\\.\\d+(?:\\.\\d+)+)/);",
+        "    const kodeBarang = kodeMatch ? kodeMatch[1].trim() : '';",
+        "    const spkVolMatch = optText.match(/Jumlah\\s*Item\\s*SPK\\s*:\\s*([\\d.,]+)/i);",
+        "    const volFromText = spkVolMatch ? cleanNumber(spkVolMatch[1]) : 0;",
+        "",
+        "    // Pilih option tersebut di dropdown Kodefikasi Barang",
+        "    triggerSelectChange(selKodefikasi, opt.value);",
+        "    await sleep(650); // Tunggu E-BMD mengisi Harga Satuan, Satuan, dan Jumlah Barang otomatis",
+        "",
+        "    const hargaForm = inpHarga ? cleanNumber(inpHarga.value) : 0;",
+        "    const volForm = inpJumlahSpk ? cleanNumber(inpJumlahSpk.value) : 0;",
+        "    const finalVol = volFromText || volForm || 1;",
+        "",
+        "    const usedNos = JSON.parse(localStorage.getItem(storageKeyUsed) || '[]');",
+        "    const matchedItem = matchExcelRow(kodeBarang, finalVol, hargaForm, usedNos);",
+        "    const pengarangVal = (document.getElementById('bast-pengarang-inp').value || defaultPengarang).trim();",
+        "",
+        "    if (inpJudul && matchedItem) {",
+        "      setInputVal(inpJudul, matchedItem.nama);",
+        "    }",
+        "    if (inpPengarang) {",
+        "      setInputVal(inpPengarang, pengarangVal);",
+        "    }",
+        "",
+        "    log('✅ Pilih: ' + kodeBarang + ' (Vol:' + finalVol + ' | Rp ' + hargaForm.toLocaleString('id-ID') + ')', '#38bdf8');",
+        "    log('   📘 Judul: \"' + (matchedItem ? matchedItem.nama : '-') + '\" | Pengarang: \"' + pengarangVal + '\"', '#4ade80');",
+        "",
+        "    return { opt: opt, matchedItem: matchedItem, usedNos: usedNos };",
+        "  }",
+        "",
+        "  // Tombol 1: Isi 1 Barang Teratas Saja (Untuk Cek Visual di Layar)",
+        "  document.getElementById('bast-fill-one-btn').onclick = async function() {",
+        "    await fillTopAvailableItem(null);",
+        "  };",
+        "",
+        "  // Tombol 2: EKSEKUSI SEMUA BARANG DI DROPDOWN SAMPAI HABIS VIA FETCH POST (TANPA RELOAD BERULANG)",
+        "  document.getElementById('bast-turbo-all-btn').onclick = async function() {",
+        "    const btn = document.getElementById('bast-turbo-all-btn');",
+        "    btn.disabled = true;",
+        "    btn.style.opacity = '0.6';",
+        "    btn.innerText = '⏳ SEDANG MENYIMPAN SEMUA BUKU...';",
+        "",
+        "    try {",
+        "      await ensureRekeningBelanjaSelected();",
+        "      const availOpts = getAvailableKodefikasiOptions();",
+        "      if (availOpts.length === 0) {",
+        "        alert('Semua barang di dropdown Kodefikasi Barang sudah Terpakai BAST (0 tersisa)!');",
+        "        btn.disabled = false;",
+        "        btn.style.opacity = '1';",
+        "        btn.innerText = '🚀 2. SIMPAN SEMUA OTOMATIS (SAMPAI HABIS)';",
+        "        return;",
+        "      }",
+        "",
+        "      log('🚀 Memulai penyimpanan otomatis ' + availOpts.length + ' item Kodefikasi Barang...', '#facc15');",
+        "      let sukses = 0;",
+        "      const formEl = (inpJudul && inpJudul.closest('form')) || (selKodefikasi && selKodefikasi.closest('form')) || document.querySelector('form');",
+        "      const postUrl = (formEl && formEl.action) ? formEl.action : location.href;",
+        "",
+        "      for (let i = 0; i < availOpts.length; i++) {",
+        "        const opt = availOpts[i];",
+        "        const resFill = await fillTopAvailableItem(opt);",
+        "        if (!resFill) continue;",
+        "",
+        "        await sleep(250);",
+        "        // Ambil seluruh FormData setelah form terisi lengkap oleh event change E-BMD",
+        "        if (formEl) {",
+        "          const fd = new FormData(formEl);",
+        "          const params = new URLSearchParams();",
+        "          fd.forEach(function(val, key) { params.set(key, String(val)); });",
+        "",
+        "          const resp = await fetch(postUrl, {",
+        "            method: 'POST',",
+        "            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },",
+        "            body: params.toString(),",
+        "            credentials: 'include'",
+        "          });",
+        "",
+        "          if (resp.ok) {",
+        "            sukses++;",
+        "            if (resFill.matchedItem) {",
+        "              resFill.usedNos.push(resFill.matchedItem.no);",
+        "              localStorage.setItem(storageKeyUsed, JSON.stringify(resFill.usedNos));",
+        "            }",
+        "            log('💾 [' + (i + 1) + '/' + availOpts.length + '] TERSIMPAN -> ' + (resFill.matchedItem ? resFill.matchedItem.nama.slice(0, 42) : opt.value), '#4ade80');",
+        "          } else {",
+        "            log('⚠️ [' + (i + 1) + '/' + availOpts.length + '] HTTP Status: ' + resp.status, '#facc15');",
+        "          }",
+        "        }",
+        "        await sleep(300);",
+        "      }",
+        "",
+        "      log('🎉 SELESAI! ' + sukses + ' dari ' + availOpts.length + ' item berhasil disimpan dengan Pengarang \"Intan Pariwara\"!', '#facc15');",
+        "      if (sukses > 0) {",
+        "        log('🔄 Memuat ulang halaman dalam 2 detik...', '#38bdf8');",
+        "        setTimeout(function() { location.reload(); }, 1800);",
+        "      }",
+        "    } catch (err) {",
+        "      log('❌ Error: ' + err.message, '#f87171');",
+        "      btn.disabled = false;",
+        "      btn.style.opacity = '1';",
+        "      btn.innerText = '🚀 2. SIMPAN SEMUA OTOMATIS (SAMPAI HABIS)';",
+        "    }",
+        "  };",
+        "})();"
+      ];
+
+      return lines.join('\n');
+    }
+
     function copyGeneratedScript() {
       const code = document.getElementById('generated-script-box').value;
       const school = schoolsData[currentSchoolIndex];
-      copyToClipboard(code, 'Script Console "' + (school ? school.sekolah : '') + '" Berhasil Di-Copy! Silakan Paste (Ctrl+V) di Console F12 E-BMD.');
+      const modeLabel = currentScriptMode === 'BAST' ? 'KODE 2 (RINCIAN BAST / INTAN PARIWARA)' : 'KODE 1 (INPUT SPK)';
+      copyToClipboard(code, modeLabel + ' untuk "' + (school ? school.sekolah : '') + '" Berhasil Di-Copy! Silakan Paste (Ctrl+V) di Console F12 E-BMD.');
     }
 
     function downloadThisHtmlFile() {
